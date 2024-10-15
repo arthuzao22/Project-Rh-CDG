@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página para visualizar os detalhes do funcionário.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        h1 {
+            color: #343a40;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .card {
+            border: none;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+        .card-title, .card-text {
+            margin-bottom: 0.5rem;
+        }
+        .btn-success {
+            transition: background-color 0.3s ease;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .text-center {
+            margin-bottom: 20px;
+        }
+    </style>
+    <title>Visualizar Funcionário</title>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mb-4">
+            <h1>Visualizar Funcionário</h1>
+            <a href="/indexFuncionarios" class="btn btn-success">Voltar</a>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h5>Detalhes do Funcionário</h5>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>Nome:</strong> {{ db.nome }}</h5>
+                        <p class="card-text"><strong>Registro:</strong> {{ db.registro }}</p>
+                        <p class="card-text"><strong>Função:</strong> {{ db.funcao }}</p>
+                        <p class="card-text"><strong>Data de Nascimento:</strong> {{ db.data_nascimento|date:"d/m/Y" }}</p>
+                        <p class="card-text"><strong>Data de Admissão:</strong> {{ db.data_admissao|date:"d/m/Y" }}</p>
+                        <p class="card-text"><strong>CPF:</strong> {{ db.cpf }}</p>
+                        <p class="card-text"><strong>Conta Inter:</strong> {{ db.conta_inter }}</p>
+                        <p class="card-text"><strong>Último Exame:</strong> {{ db.ultimo_exame|date:"d/m/Y" }}</p>
+                        <p class="card-text"><strong>Próximo Exame:</strong> {{ db.proximo_exame|date:"d/m/Y" }}</p>
+                        <p class="card-text"><strong>Email:</strong> {{ db.email }}</p>
+                        <p class="card-text"><strong>Salário:</strong> R$ {{ db.salario }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts do Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-dZl5fnG+9fA2IzK6W/zOjC4W7e5/SBFTKqZ2tVu+ExfW/j4UqlCkv6rLkBb3HdWg" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-CI4NfHx6M0/PQzypMj0HhJTTJfK1b3EwxGlgCeT1+TG8XEX5WbPKVAXfqYHCRoIQ" crossorigin="anonymous"></script>
+</body>
+</html>
