@@ -12,6 +12,12 @@ from app.views import (
     indexFuncionarios,
     createlogin,
     manipulate_funcionarios,
+    form_salario,
+    create_salario_funcionario,
+    index_salario,
+    edit_salario,
+    update_salario,
+    delete_salario,
 )
 
 urlpatterns = [
@@ -19,17 +25,26 @@ urlpatterns = [
     path('', home, name='home'),
     path('form/', form, name='form'),
     path('create/', create, name='create'),
+    
+    # Funcionários URLs
     path('indexFuncionarios/', indexFuncionarios, name='indexFuncionarios'),
     path('view/<int:pk>/', view, name='view'),
     path('edit/<int:pk>/', edit, name='edit'),
     path('update/<int:pk>/', update, name='update'),
     path('delete/<int:pk>/', delete, name='delete'),
-    
+
     # Login URLs
     path('login/', user_login, name='user_login'),
     path('createlogin/', createlogin, name='createlogin'),
-    
-    #manipulação
+
+    # Manipulação de Funcionários
     path('manipulate_funcionarios/', manipulate_funcionarios, name='manipulate_funcionarios'),
 
+    # Salários dos Funcionários URLs
+    path('form_salario/', form_salario, name='form_salario'),
+    path('create_salario_funcionario/', create_salario_funcionario, name='create_salario_funcionario'),
+    path('index_salario/', index_salario, name='index_salario'),
+    path('edit_salario/<int:pk>/', edit_salario, name='edit_salario'),
+    path('update_salario/<int:pk>/', update_salario, name='update_salario'),
+    path('delete_salario/<int:pk>/', delete_salario, name='delete_salario'),
 ]
