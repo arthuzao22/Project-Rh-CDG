@@ -137,8 +137,21 @@ def update_salario(request, pk):
 
 # Listagem de salários dos funcionários
 def index_salario(request):
-    data = {'db': PlanSalario.objects.all()}
+    # Obtém os parâmetros de mês e ano da requisição (GET)
+    mes = request.GET.get('mes')
+    ano = request.GET.get('ano')
+
+    # Se houver filtros aplicados, faça a filtragem
+    if mes and ano:
+        data = {
+            'db': PlanSalario.objects.filter(mesAno__month=mes, mesAno__year=ano)
+        }
+    else:
+        # Caso contrário, exiba todos os registros
+        data = {'db': PlanSalario.objects.all()}
+
     return render(request, 'Salarios/index_salario.html', data)
+
 
 # Deletar salário de funcionário
 def delete_salario(request, pk):

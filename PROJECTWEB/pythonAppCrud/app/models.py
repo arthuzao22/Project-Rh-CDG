@@ -20,6 +20,8 @@ class Funcionarios(models.Model):
     proximo_exame = models.DateField(null=True, blank=True, verbose_name='Próximo Exame')
     email = models.EmailField(max_length=100, validators=[EmailValidator()], unique=True, verbose_name='Email')
     salario = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Salário')
+    status = models.CharField(max_length=50, verbose_name='status')
+
 
     def __str__(self):
         return self.nome

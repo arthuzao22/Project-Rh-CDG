@@ -16,7 +16,8 @@ class FuncionariosForm(ModelForm):
             'ultimo_exame', 
             'proximo_exame', 
             'email', 
-            'salario'
+            'salario',
+            'status'
         ]
         
         # Adicionando widgets para personalizar os campos

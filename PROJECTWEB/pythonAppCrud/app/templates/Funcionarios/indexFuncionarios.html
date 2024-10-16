@@ -59,6 +59,7 @@
                     <th scope="col">Registro</th>
                     <th scope="col">Função</th>
                     <th scope="col">Ações</th>
+                    <th scope="col">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -68,6 +69,7 @@
                         <td>{{ funcionario.nome }}</td>
                         <td>{{ funcionario.registro }}</td>
                         <td>{{ funcionario.funcao }}</td>
+                        <td>{{ funcionario.status }}</td>
                         <td>
                             <a href="{% url 'view' funcionario.id %}" class="btn btn-dark">Visualizar</a>
                             <a href="{% url 'edit' funcionario.id %}" class="btn btn-primary">Editar</a>
