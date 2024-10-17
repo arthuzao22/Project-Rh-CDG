@@ -48,7 +48,16 @@ def update(request, pk):
 
 # Listagem de funcionários
 def indexFuncionarios(request):
-    data = {'db': Funcionarios.objects.all()}
+    # Obtém os parâmetros de mês e ano da requisição (GET)
+    status = request.GET.get('status')
+
+    if status:
+        data = {
+            'db': Funcionarios.objects.filter(status=status)
+        }
+    else:
+        data = {'db': Funcionarios.objects.all()}
+        
     return render(request, 'Funcionarios/indexFuncionarios.html', data)
 
 # Deletar funcionário
@@ -116,7 +125,6 @@ def create_salario_funcionario(request):
     if form.is_valid():
         form.save()
         messages.success(request, "Salário do Funcionário criado com sucesso!")
-        #print(form)
         return redirect('index_salario')
     return render(request, 'Salarios/form_salario.html', {'form': form})
 
