@@ -43,12 +43,24 @@
         th, td {
             white-space: nowrap;
         }
+        footer {
+            background-color: #343a40; /* Cor do rodapé */
+            color: white;
+            padding: 10px 0;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
     </style>
     <title>CRUD de Planos de Funcionários</title>
 </head>
 <body>
+    <header class="bg-primary text-white text-center py-3">
+        <h2>Sistema de Gestão de Funcionários</h2>
+    </header>
+
     <div class="col-12 col-md-8 m-auto text-center">
-        <h1>CRUD de Planos de Funcionários</h1>
         <form method="GET" action="{% url 'index_salario' %}">
             <div class="row">
                 <div class="col">
@@ -74,9 +86,9 @@
                         <th scope="col">Mês e Ano</th>
                         <th scope="col">Funcionário</th>
                         <th scope="col">Pagamento</th>
-                        <th scope="col">registro</th>
+                        <th scope="col">Registro</th>
                         <th scope="col">Função</th>
-                        <th scope="col">Salario</th>
+                        <th scope="col">Salário</th>
                         <th scope="col">Dias Trabalhados</th>
                         <th scope="col">Arredondamento</th>
                         <th scope="col">Férias</th>
@@ -122,12 +134,18 @@
                   {% empty %}
                     <tr>
                         <td colspan="16" class="text-center">Nenhum plano de funcionário encontrado.</td>
+                        <td colspan="16" class="text-center">Atualize a pagina ou entre em contato com o Dev. <strong>arthurreisgonc@gmail.com </strong></td>
                     </tr>
                   {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
+
+    <!-- Rodapé -->
+    <footer class="footer text-center">
+        <p>&copy; 2024 CDG. Todos os direitos reservados.</p>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-8O0c3P1wq3ZZ+znt3H3ExDgOasHjGTR9I8H3zxk8s0hcIwFCRXGRmbGNCgRnlRk6" crossorigin="anonymous"></script>
 </body>

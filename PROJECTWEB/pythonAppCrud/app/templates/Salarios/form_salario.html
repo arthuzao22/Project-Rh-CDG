@@ -4,95 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .header {
+            background-color: #007bff; /* Cor do cabeçalho */
+            color: white;
+            padding: 15px 0;
+        }
+        h1 {
+            color: #343a40;
+            font-family: 'Arial', sans-serif;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 15px; /* Espaçamento entre os campos do formulário */
+        }
+        .btn {
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            opacity: 0.85;
+        }
+    </style>
     <title>Cadastro de Plano de Salário</title>
-    
 </head>
 <body>
-    <div class="col-8 m-auto pt-2 pb-2 text-center">
-        <h1>CRUD de Plano de Salário</h1>
-    </div>
-    
-    <div class="col-8 m-auto pt-2 pb-2 text-center">
-        <a href="/index_salario" class="btn btn-success">Voltar</a>
-    </div>
-    
-    <div class="col-8 m-auto pt-2 pb-2">
-      <form name="form" id="form" action="{% if db %}{% url 'update_salario' db.id %}{% else %}{% url 'create_salario_funcionario' %}{% endif %}" method="post">
-        {% csrf_token %}
-        
-        <div class="form-group mb-3">
-            <label for="id_funcionario">Funcionário:</label>
-            {{ form.funcionario }}
-            {{ form.funcionario.errors }}
-        </div>
-        <div class="form-group mb-3">
-            <label for="id_mesAno">Mês e Ano:</label>
-            {{ form.mesAno }}
-            {{ form.mesAno.errors }}
-        </div>
-        <div class="form-group mb-3">
-            <label for="id_dias_trabalhados">Dias Trabalhados:</label>
-            {{ form.dias_trabalhados }}
-            {{ form.dias_trabalhados.errors }}
-        </div>
-        <div class="form-group mb-3">
-            <label for="id_arred">Arredondamento:</label>
-            {{ form.arred }}
-            {{ form.arred.errors }}
-        </div>
-        <div class="form-group mb-3">
-            <label for="id_ferias">Férias:</label>
-            {{ form.ferias }}
-            {{ form.ferias.errors }}
-        </div>
-        <div class="form-group mb-3">
-            <label for="id_decimo_terceiro_ferias">13º Férias:</label>
-            {{ form.decimo_terceiro_ferias }}
-            {{ form.decimo_terceiro_ferias.errors }}
-        </div>
-        <div class="form-group mb-3">
-            <label for="id_periculosidade">Periculosidade:</label>
-            {{ form.periculosidade }}
-            {{ form.periculosidade.errors }}
-        </div>
-        <div class="form-group mb-3">
-            <label for="id_salario_familia">Salário Família:</label>
-            {{ form.salario_familia }}
-            {{ form.salario_familia.errors }}
-        </div>
-        <div class="form-group mb-3">
-            <label for="id_outras_entradas">Outras Entradas:</label>
-            {{ form.outras_entradas }}
-            {{ form.outras_entradas.errors }}
-        </div>
-        <div class="form-group mb-3">
-            <label for="id_ir_ferias">IR Férias:</label>
-            {{ form.ir_ferias }}
-            {{ form.ir_ferias.errors }}
-        </div>
-        <div class="form-group mb-3">
-            <label for="id_vales_e_faltas">Vales e Faltas:</label>
-            {{ form.vales_e_faltas }}
-            {{ form.vales_e_faltas.errors }}
-        </div>
-        <div class="form-group mb-3">
-            <label for="id_vt">Vale Transporte:</label>
-            {{ form.vt }}
-            {{ form.vt.errors }}
-        </div>
-        <div class="form-group mb-3">
-            <label for="id_troco">Troco:</label>
-            {{ form.troco }}
-            {{ form.troco.errors }}
-        </div>
-        <div class="form-group mb-3">
-            <label for="id_geral">Geral:</label>
-            {{ form.geral }}
-            {{ form.geral.errors }}
-        </div>
 
-        <input type="submit" class="btn btn-success" value="Salvar">
-      </form>
+    <!-- Cabeçalho -->
+    <header class="header text-center">
+        <h1>CRUD de Plano de Salário</h1>
+        <a href="/index_salario" class="btn btn-light">Voltar</a>
+    </header>
+
+    <div class="container mt-5">
+        <div class="col-8 m-auto">
+            <form name="form" id="form" action="{% if db %}{% url 'update_salario' db.id %}{% else %}{% url 'create_salario_funcionario' %}{% endif %}" method="post">
+                {% csrf_token %}
+                
+                <div class="form-group mb-3">
+                    <label for="id_funcionario">Funcionário:</label>
+                    <select class="form-control" id="id_funcionario" name="funcionario">
+                        <!-- Opções de funcionários -->
+                        <option value="{{ form.funcionario }}</option>
+                    </select>
+                    {{ form.funcionario.errors }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="id_mesAno">Mês e Ano:</label>
+                    <input type="date" class="form-control" id="id_mesAno" name="mesAno" value="{{ form.mesAno.value }}">
+                    {{ form.mesAno.errors }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="id_dias_trabalhados">Dias Trabalhados:</label>
+                    <input type="number" class="form-control" id="id_dias_trabalhados" name="dias_trabalhados" value="{{ form.dias_trabalhados.value }}">
+                    {{ form.dias_trabalhados.errors }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="id_arred">Arredondamento:</label>
+                    <input type="number" class="form-control" id="id_arred" name="arred" value="{{ form.arred.value }}">
+                    {{ form.arred.errors }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="id_ferias">Férias:</label>
+                    <input type="number" class="form-control" id="id_ferias" name="ferias" value="{{ form.ferias.value }}">
+                    {{ form.ferias.errors }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="id_decimo_terceiro_ferias">13º Férias:</label>
+                    <input type="number" class="form-control" id="id_decimo_terceiro_ferias" name="decimo_terceiro_ferias" value="{{ form.decimo_terceiro_ferias.value }}">
+                    {{ form.decimo_terceiro_ferias.errors }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="id_periculosidade">Periculosidade:</label>
+                    <input type="number" class="form-control" id="id_periculosidade" name="periculosidade" value="{{ form.periculosidade.value }}">
+                    {{ form.periculosidade.errors }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="id_salario_familia">Salário Família:</label>
+                    <input type="number" class="form-control" id="id_salario_familia" name="salario_familia" value="{{ form.salario_familia.value }}">
+                    {{ form.salario_familia.errors }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="id_outras_entradas">Outras Entradas:</label>
+                    <input type="number" class="form-control" id="id_outras_entradas" name="outras_entradas" value="{{ form.outras_entradas.value }}">
+                    {{ form.outras_entradas.errors }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="id_ir_ferias">IR Férias:</label>
+                    <input type="number" class="form-control" id="id_ir_ferias" name="ir_ferias" value="{{ form.ir_ferias.value }}">
+                    {{ form.ir_ferias.errors }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="id_vales_e_faltas">Vales e Faltas:</label>
+                    <input type="number" class="form-control" id="id_vales_e_faltas" name="vales_e_faltas" value="{{ form.vales_e_faltas.value }}">
+                    {{ form.vales_e_faltas.errors }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="id_vt">Vale Transporte:</label>
+                    <input type="number" class="form-control" id="id_vt" name="vt" value="{{ form.vt.value }}">
+                    {{ form.vt.errors }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="id_troco">Troco:</label>
+                    <input type="number" class="form-control" id="id_troco" name="troco" value="{{ form.troco.value }}">
+                    {{ form.troco.errors }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="id_geral">Geral:</label>
+                    <input type="number" class="form-control" id="id_geral" name="geral" value="{{ form.geral.value }}">
+                    {{ form.geral.errors }}
+                </div>
+
+                <input type="submit" class="btn btn-success" value="Salvar">
+            </form>
+        </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-8O0c3P1wq3ZZ+znt3H3ExDgOasHjGTR9I8H3zxk8s0hcIwFCRXGRmbGNCgRnlRk6" crossorigin="anonymous"></script>
 </body>
 </html>

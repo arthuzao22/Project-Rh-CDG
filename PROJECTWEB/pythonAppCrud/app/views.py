@@ -116,6 +116,7 @@ def create_salario_funcionario(request):
     if form.is_valid():
         form.save()
         messages.success(request, "Salário do Funcionário criado com sucesso!")
+        #print(form)
         return redirect('index_salario')
     return render(request, 'Salarios/form_salario.html', {'form': form})
 
