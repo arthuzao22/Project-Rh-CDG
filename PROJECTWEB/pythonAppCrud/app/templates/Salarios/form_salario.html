@@ -54,7 +54,13 @@
 
                 <div class="form-group mb-3">
                     <label for="id_mesAno">Mês e Ano:</label>
-                    <input type="date" class="form-control" id="id_mesAno" name="mesAno" value="{{ form.mesAno.value }}">
+                    <input type="month" class="form-control" id="id_mesAno" name="mesAno" value="{{ form.mesAno.value }}">
+                    {{ form.mesAno.errors }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="id_qtde_dias_Mes">Informe a qtde de dias do mes:</label>
+                    <input type="number" class="form-control" id="qtde_dias_Mes" name="qtde_dias_Mes" value="{{ form.qtde_dias_Mes.value }}">
                     {{ form.mesAno.errors }}
                 </div>
 

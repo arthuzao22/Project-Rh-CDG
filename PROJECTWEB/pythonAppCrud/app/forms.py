@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from app.models import Funcionarios, Login, PlanSalario  # Corrigido
+from app.models import Funcionarios, Login, PlanSalario
 
 class FuncionariosForm(ModelForm):
     class Meta:
@@ -20,12 +20,11 @@ class FuncionariosForm(ModelForm):
             'status'
         ]
         
-        # Adicionando widgets para personalizar os campos
         widgets = {
-            'data_nascimento': forms.DateInput(attrs={'type': 'date'}),
-            'data_admissao': forms.DateInput(attrs={'type': 'date'}),
-            'ultimo_exame': forms.DateInput(attrs={'type': 'date'}),
-            'proximo_exame': forms.DateInput(attrs={'type': 'date'}),
+            'data_nascimento': forms.TextInput(attrs={'placeholder': 'dd/mm/yyyy', 'class': 'date-input'}),
+            'data_admissao': forms.TextInput(attrs={'placeholder': 'dd/mm/yyyy', 'class': 'date-input'}),
+            'ultimo_exame': forms.TextInput(attrs={'placeholder': 'dd/mm/yyyy', 'class': 'date-input'}),
+            'proximo_exame': forms.TextInput(attrs={'placeholder': 'dd/mm/yyyy', 'class': 'date-input'}),
             'email': forms.EmailInput(attrs={'placeholder': 'email@exemplo.com'}),
         }
 
@@ -41,19 +40,20 @@ class LoginForm(ModelForm):
             'username': forms.TextInput(attrs={'placeholder': 'Nome de Usuário'}),
         }
 
-class PlanSalarioForm(ModelForm):  # Corrigido
+class PlanSalarioForm(ModelForm):
     class Meta:
         model = PlanSalario
         fields = [
             'funcionario', 
             'mesAno', 
-            'dias_trabalhados',  # Corrigido
+            'qtde_dias_Mes',
+            'dias_trabalhados',  
             'arred', 
             'ferias', 
-            'decimo_terceiro_ferias',  # Corrigido
-            'periculosidade',  # Corrigido
+            'decimo_terceiro_ferias',  
+            'periculosidade',  
             'salario_familia', 
-            'outras_entradas',  # Corrigido
+            'outras_entradas',  
             'ir_ferias', 
             'vales_e_faltas', 
             'vt', 
@@ -62,17 +62,5 @@ class PlanSalarioForm(ModelForm):  # Corrigido
         ]
         
         widgets = {
-            'mesAno': forms.DateInput(attrs={'type': 'date'}),  # Mudando para campo de texto
-            'dias_trabalhados': forms.NumberInput(attrs={'min': 0, 'step': 'any'}),  # Corrigido
-            'arred': forms.NumberInput(attrs={'min': 0, 'step': 'any'}),
-            'ferias': forms.NumberInput(attrs={'min': 0, 'step': 'any'}),
-            'decimo_terceiro_ferias': forms.NumberInput(attrs={'min': 0, 'step': 'any'}),
-            'periculosidade': forms.NumberInput(attrs={'min': 0, 'step': 'any'}),
-            'salario_familia': forms.NumberInput(attrs={'min': 0, 'step': 'any'}),
-            'outras_entradas': forms.NumberInput(attrs={'min': 0, 'step': 'any'}),
-            'ir_ferias': forms.NumberInput(attrs={'min': 0, 'step': 'any'}),
-            'vales_e_faltas': forms.NumberInput(attrs={'min': 0, 'step': 'any'}),
-            'vt': forms.NumberInput(attrs={'min': 0, 'step': 'any'}),
-            'troco': forms.NumberInput(attrs={'min': 0, 'step': 'any'}),
-            'geral': forms.NumberInput(attrs={'min': 0, 'step': 'any'}),
+            'mesAno': forms.TextInput(attrs={'placeholder': 'mm/yyyy', 'class': 'date-input'}),
         }

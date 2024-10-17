@@ -5,6 +5,8 @@ from django.contrib.auth.hashers import make_password
 from app.forms import FuncionariosForm, LoginForm, PlanSalarioForm
 from app.models import Login, Funcionarios, PlanSalario
 import pandas as pd
+import calendar
+from decimal import Decimal
 
 # Página inicial com todos os funcionários
 def home(request):
@@ -100,22 +102,6 @@ def createlogin(request):
         form = LoginForm()
     return render(request, 'login/loginform.html', {'form': form})
 
-# Manipulação de dados dos funcionários com Pandas
-def manipulate_funcionarios(request):
-    funcionarios = Funcionarios.objects.all()
-    data = {
-        'nome': [f.nome for f in funcionarios],
-        'registro': [f.registro for f in funcionarios],
-        'funcao': [f.funcao for f in funcionarios],
-        'data_admissao': [f.data_admissao for f in funcionarios],
-        'salario': [f.salario for f in funcionarios],
-    }
-    df = pd.DataFrame(data)
-    df['salario_com_acrescimo'] = df['salario'].apply(lambda x: x + 100 if x > 3000 else x)
-    df['13º'] = (df['salario_com_acrescimo'] / 12) * 12
-    df['Total_bruto_mes'] = df['salario_com_acrescimo'] + df['13º']
-    
-    return render(request, 'Funcionarios/manipulated_data.html', {'data': df.to_html()})
 
 ############################################################## PASTA 'SALARIOS' ####################################################
 
@@ -144,23 +130,30 @@ def update_salario(request, pk):
         return redirect('index_salario')
     return render(request, 'Salarios/form_salario.html', {'form': form, 'db': funcionario_salario})
 
-# Listagem de salários dos funcionários
 def index_salario(request):
-    # Obtém os parâmetros de mês e ano da requisição (GET)
-    mes = request.GET.get('mes')
-    ano = request.GET.get('ano')
+    # Obtém os parâmetros de mês, ano e status (ativo/inativo) da requisição (GET)
+    mesAno = request.GET.get('mesAno')
+    status = request.GET.get('status') 
+    nome = request.GET.get('nome') 
 
-    # Se houver filtros aplicados, faça a filtragem
-    if mes and ano:
-        data = {
-            'db': PlanSalario.objects.filter(mesAno__month=mes, mesAno__year=ano)
-        }
-    else:
-        # Caso contrário, exiba todos os registros
-        data = {'db': PlanSalario.objects.all()}
+
+    # Inicia a query com todos os registros de salários
+    salarios = PlanSalario.objects.all().select_related('funcionario')
+
+    # Aplica o filtro de mês e ano, se fornecido
+    if mesAno:
+        salarios = salarios.filter(mesAno=mesAno)
+    
+    # Aplica o filtro de status de funcionários, se fornecido
+    if status:
+        salarios = salarios.filter(funcionario__status=status)
+
+    if nome:
+        salarios = salarios.filter(funcionario__nome__icontains=nome)
+    # Prepara os dados para renderização
+    data = {'db': salarios}
 
     return render(request, 'Salarios/index_salario.html', data)
-
 
 # Deletar salário de funcionário
 def delete_salario(request, pk):
@@ -173,3 +166,86 @@ def delete_salario(request, pk):
 def form_salario(request):
     data = {'form': PlanSalarioForm()}
     return render(request, 'Salarios/form_salario.html', data)
+
+
+############################################################## RELATORIO SALARIO MENSAL ####################################################
+
+# Manipulação de dados dos funcionários com Pandas
+# Manipulação de dados dos funcionários com Pandas
+def manipulate_funcionarios(request):
+    # Obtém dados dos funcionários
+    funcionarios = Funcionarios.objects.all()
+    data = {
+        'nome': [f.nome for f in funcionarios],
+        'registro': [f.registro for f in funcionarios],
+        'funcao': [f.funcao for f in funcionarios],
+        'data_admissao': [f.data_admissao for f in funcionarios],
+        'salario': [f.salario for f in funcionarios],
+    }
+    
+    # Obtém dados de salários
+    salarios = PlanSalario.objects.all()  # Filtra pelo mês e ano
+    data_salario = {
+        'mesAno': [s.mesAno for s in salarios],
+        'dias_trabalhados': [s.dias_trabalhados for s in salarios],
+        'qtde_dias_Mes': [s.qtde_dias_Mes for s in salarios],
+        'arred': [s.arred for s in salarios],
+        'ferias': [s.ferias for s in salarios],
+        'decimo_terceiro_ferias': [s.decimo_terceiro_ferias for s in salarios],
+        'periculosidade': [s.periculosidade for s in salarios],
+        'salario_familia': [s.salario_familia for s in salarios],
+        'outras_entradas': [s.outras_entradas for s in salarios],
+    }
+    
+    df = pd.DataFrame(data_salario)
+    df2 = pd.DataFrame(data)
+
+    # Converte colunas para Decimal
+    df2['salario'] = df2['salario'].apply(Decimal)
+    df['qtde_dias_Mes'] = df['qtde_dias_Mes'].apply(Decimal)
+    df['dias_trabalhados'] = df['dias_trabalhados'].apply(Decimal)
+    df['arred'] = df['arred'].apply(Decimal)
+    df['ferias'] = df['ferias'].apply(Decimal)
+    df['decimo_terceiro_ferias'] = df['decimo_terceiro_ferias'].apply(Decimal)
+    df['periculosidade'] = df['periculosidade'].apply(Decimal)
+    df['salario_familia'] = df['salario_familia'].apply(Decimal)
+    df['outras_entradas'] = df['outras_entradas'].apply(Decimal)
+
+    # Função para realizar o cálculo somente se os valores não forem zero
+    def calcular_salario_mes(salario, qtde_dias_Mes, dias_trabalhados):
+        if salario == 0 or qtde_dias_Mes == 0 or dias_trabalhados == 0:
+            return None 
+        return (salario / qtde_dias_Mes) * dias_trabalhados
+
+    # Aplica a função com a condição
+    df['salario_Mes'] = df.apply(lambda row: calcular_salario_mes(
+        df2['salario'][row.name], row['qtde_dias_Mes'], row['dias_trabalhados']), axis=1)
+    
+    # Função para calcular o valor bruto da folha final
+    def calcular_bruto_folha_final(salario_mes, arred, ferias, decimo_terceiro_ferias, periculosidade, salario_familia, outras_entradas):
+        # Substitui None por Decimal(0)
+        salario_mes = salario_mes if salario_mes is not None else Decimal(0)
+        arred = arred if arred is not None else Decimal(0)
+        ferias = ferias if ferias is not None else Decimal(0)
+        decimo_terceiro_ferias = decimo_terceiro_ferias if decimo_terceiro_ferias is not None else Decimal(0)
+        periculosidade = periculosidade if periculosidade is not None else Decimal(0)
+        salario_familia = salario_familia if salario_familia is not None else Decimal(0)
+        outras_entradas = outras_entradas if outras_entradas is not None else Decimal(0)
+
+        return (salario_mes + arred + ferias + decimo_terceiro_ferias +
+                periculosidade + salario_familia + outras_entradas)
+
+    # Arredondando os valores de salario_Mes para 2 casas decimais, ignorando None
+    df['salario_Mes'] = df['salario_Mes'].apply(lambda x: round(x, 2) if x is not None else x)
+
+    # Calcula o bruto_Mes
+    df['bruto_Mes'] = df.apply(lambda row: calcular_bruto_folha_final(
+        row['salario_Mes'], row['arred'], row['ferias'], row['decimo_terceiro_ferias'],
+        row['periculosidade'], row['salario_familia'], row['outras_entradas']), axis=1)
+
+    # Arredondando bruto_Mes para 2 casas decimais, ignorando None
+    df['bruto_Mes'] = df['bruto_Mes'].apply(lambda x: round(x, 2) if x is not None else x)
+
+    print(df)
+
+    return render(request, 'Funcionarios/manipulated_data.html', {'df': df.to_html()})

@@ -13,8 +13,8 @@ class Migration(migrations.Migration):
                 ('nome', models.CharField(max_length=150)),
                 ('registro', models.CharField(max_length=50)),
                 ('funcao', models.CharField(max_length=100)),
-                ('data_nascimento', models.DateField()),
-                ('data_admissao', models.DateField()),
+                ('data_nascimento', models.CharField(max_length=150)),
+                ('data_admissao', models.CharField(max_length=150)),
                 ('cpf', models.CharField(max_length=11)),
                 ('conta_inter', models.CharField(max_length=20)),
                 ('ultimo_exame', models.DateField(null=True, blank=True)),
@@ -47,7 +47,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nome', models.CharField(max_length=150)),
-                ('mesAno', models.DateField()),  # Para filtrar quando for listar o mês de pagamento
+                ('mesAno', models.IntegerField()),  # Para filtrar quando for listar o mês de pagamento
+                ('qtde_dias_Mes', models.IntegerField(max_length=15)),  # Para filtrar quando for listar o mês de pagamento
                 ('dias_trabalhados', models.IntegerField()),  # Alterado para IntegerField
                 ('arred', models.DecimalField(max_digits=10, decimal_places=2)),
                 ('ferias', models.DecimalField(max_digits=10, decimal_places=2)),
