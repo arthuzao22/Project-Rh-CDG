@@ -17,7 +17,8 @@ class FuncionariosForm(ModelForm):
             'proximo_exame', 
             'email', 
             'salario',
-            'status'
+            'status',
+            'cargo'
         ]
         
         widgets = {

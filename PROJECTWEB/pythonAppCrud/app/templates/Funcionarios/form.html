@@ -92,6 +92,15 @@
                     <input type="email" id="email" name="email" class="form-control" value="{{ form.email.value|default_if_none:'' }}">
                 </div>
                 <div class="form-group">
+                    <label for="cargo">cargo:</label>
+                    <select id="cargo" name="cargo" class="form-control">
+                        <option value="Estagiario" {% if form.cargo.value == "Estagiario" %}selected{% endif %}>Estagiario</option>
+                        <option value="CLT" {% if form.cargo.value == "CLT" %}selected{% endif %}>CLT</option>
+                        <option value="PJ" {% if form.cargo.value == "PJ" %}selected{% endif %}>PJ</option>
+                        <option value="outros" {% if form.cargo.value == "outros" %}selected{% endif %}>Outros</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="salario">Salário:</label>
                     <input type="number" id="salario" name="salario" class="form-control" value="{{ form.salario.value|default_if_none:'' }}">
                 </div>

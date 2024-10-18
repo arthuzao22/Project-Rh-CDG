@@ -6,7 +6,9 @@ from app.forms import FuncionariosForm, LoginForm, PlanSalarioForm
 from app.models import Login, Funcionarios, PlanSalario
 import pandas as pd
 import calendar
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
+import numpy as np
+
 
 # Página inicial com todos os funcionários
 def home(request):
@@ -170,8 +172,72 @@ def form_salario(request):
 
 ############################################################## RELATORIO SALARIO MENSAL ####################################################
 
-# Manipulação de dados dos funcionários com Pandas
-# Manipulação de dados dos funcionários com Pandas
+def calcular_salario_mes(salario, qtde_dias_Mes, dias_trabalhados):
+    if salario == 0 or qtde_dias_Mes == 0 or dias_trabalhados == 0:
+        return None 
+    return (salario / qtde_dias_Mes) * dias_trabalhados
+
+def calcular_bruto_folha_final(salario_mes, arred, ferias, decimo_terceiro_ferias, periculosidade, salario_familia, outras_entradas):
+    # Substitui None por Decimal(0)
+    salario_mes = salario_mes if salario_mes is not None else Decimal(0)
+    arred = arred if arred is not None else Decimal(0)
+    ferias = ferias if ferias is not None else Decimal(0)
+    decimo_terceiro_ferias = decimo_terceiro_ferias if decimo_terceiro_ferias is not None else Decimal(0)
+    periculosidade = periculosidade if periculosidade is not None else Decimal(0)
+    salario_familia = salario_familia if salario_familia is not None else Decimal(0)
+    outras_entradas = outras_entradas if outras_entradas is not None else Decimal(0)
+
+    return (salario_mes + arred + ferias + decimo_terceiro_ferias +
+            periculosidade + salario_familia + outras_entradas)
+
+def calcular_INSS(salario_Mes, cargo, ferias=Decimal(0), decimo_terceiro_ferias=Decimal(0), periculosidade=Decimal(0), outras_entradas=Decimal(0)):
+    # Substitui None por Decimal(0)
+    salario_Mes = salario_Mes if salario_Mes is not None else Decimal(0)
+    ferias = ferias if ferias is not None else Decimal(0)
+    decimo_terceiro_ferias = decimo_terceiro_ferias if decimo_terceiro_ferias is not None else Decimal(0)
+    periculosidade = periculosidade if periculosidade is not None else Decimal(0)
+    outras_entradas = outras_entradas if outras_entradas is not None else Decimal(0)
+
+    if cargo not in ["Estagiario", "PJ"]:
+        total = salario_Mes + ferias + decimo_terceiro_ferias + periculosidade + outras_entradas
+
+        if total < Decimal(1):
+            return Decimal(0)
+        else:
+            if total < Decimal(1412):
+                return np.ceil(total * Decimal(0.075))
+            elif total < Decimal(2666.68):
+                return np.ceil(total * Decimal(0.09) - Decimal(21.18))
+            else:
+                return np.ceil(total * Decimal(0.12) - Decimal(101.18))
+    else:
+        return Decimal(0)
+
+def calcular_FGTS(salario_Mes, cargo, ferias=Decimal(0), decimo_terceiro_ferias=Decimal(0)):
+    # Substitui None por Decimal(0)
+    salario_Mes = salario_Mes if salario_Mes is not None else Decimal(0)
+    ferias = ferias if ferias is not None else Decimal(0)
+    decimo_terceiro_ferias = decimo_terceiro_ferias if decimo_terceiro_ferias is not None else Decimal(0)
+
+    if cargo not in ["Estagiario", "PJ"]:
+        total = (salario_Mes + ferias + decimo_terceiro_ferias)
+    else:
+        total = Decimal(0)
+        
+    return total * Decimal(0.08)
+
+def calcular_VT(salario_Mes):
+    # Substitui None por Decimal(0)
+    salario_Mes = salario_Mes if salario_Mes is not None else Decimal(0)
+
+    # Calcula o VT como 6% do salário
+    vt = salario_Mes * Decimal(0.06)
+
+    # Arredonda para duas casas decimais
+    vt_arredondado = vt.quantize(Decimal('0.00'), rounding=ROUND_HALF_UP)
+
+    return vt_arredondado
+
 def manipulate_funcionarios(request):
     # Obtém dados dos funcionários
     funcionarios = Funcionarios.objects.all()
@@ -181,6 +247,7 @@ def manipulate_funcionarios(request):
         'funcao': [f.funcao for f in funcionarios],
         'data_admissao': [f.data_admissao for f in funcionarios],
         'salario': [f.salario for f in funcionarios],
+        'cargo': [f.cargo for f in funcionarios],  # Corrigido aqui
     }
     
     # Obtém dados de salários
@@ -211,30 +278,10 @@ def manipulate_funcionarios(request):
     df['salario_familia'] = df['salario_familia'].apply(Decimal)
     df['outras_entradas'] = df['outras_entradas'].apply(Decimal)
 
-    # Função para realizar o cálculo somente se os valores não forem zero
-    def calcular_salario_mes(salario, qtde_dias_Mes, dias_trabalhados):
-        if salario == 0 or qtde_dias_Mes == 0 or dias_trabalhados == 0:
-            return None 
-        return (salario / qtde_dias_Mes) * dias_trabalhados
-
     # Aplica a função com a condição
     df['salario_Mes'] = df.apply(lambda row: calcular_salario_mes(
         df2['salario'][row.name], row['qtde_dias_Mes'], row['dias_trabalhados']), axis=1)
     
-    # Função para calcular o valor bruto da folha final
-    def calcular_bruto_folha_final(salario_mes, arred, ferias, decimo_terceiro_ferias, periculosidade, salario_familia, outras_entradas):
-        # Substitui None por Decimal(0)
-        salario_mes = salario_mes if salario_mes is not None else Decimal(0)
-        arred = arred if arred is not None else Decimal(0)
-        ferias = ferias if ferias is not None else Decimal(0)
-        decimo_terceiro_ferias = decimo_terceiro_ferias if decimo_terceiro_ferias is not None else Decimal(0)
-        periculosidade = periculosidade if periculosidade is not None else Decimal(0)
-        salario_familia = salario_familia if salario_familia is not None else Decimal(0)
-        outras_entradas = outras_entradas if outras_entradas is not None else Decimal(0)
-
-        return (salario_mes + arred + ferias + decimo_terceiro_ferias +
-                periculosidade + salario_familia + outras_entradas)
-
     # Arredondando os valores de salario_Mes para 2 casas decimais, ignorando None
     df['salario_Mes'] = df['salario_Mes'].apply(lambda x: round(x, 2) if x is not None else x)
 
@@ -242,10 +289,23 @@ def manipulate_funcionarios(request):
     df['bruto_Mes'] = df.apply(lambda row: calcular_bruto_folha_final(
         row['salario_Mes'], row['arred'], row['ferias'], row['decimo_terceiro_ferias'],
         row['periculosidade'], row['salario_familia'], row['outras_entradas']), axis=1)
-
-    # Arredondando bruto_Mes para 2 casas decimais, ignorando None
+    
+    # Adiciona a coluna INSS aplicando a função calcular_INSS
+    df['INSS'] = df.apply(lambda row: calcular_INSS(
+        row['salario_Mes'], df2['cargo'][row.name], row['ferias'], 
+        row['decimo_terceiro_ferias'], row['periculosidade'], row['outras_entradas']), axis=1)
+    
+    df['FGTS'] = df.apply(lambda row: calcular_FGTS(
+        row['salario_Mes'], df2['cargo'][row.name], row['ferias'], row['decimo_terceiro_ferias']), axis=1)
+    
+    df['VT'] = df.apply(lambda row: calcular_VT(
+        row['salario_Mes']), axis=1)
+    
+    # Arredondando bruto_Mes, FGTS e INSS para 2 casas decimais, ignorando None
     df['bruto_Mes'] = df['bruto_Mes'].apply(lambda x: round(x, 2) if x is not None else x)
+    df['FGTS'] = df['FGTS'].apply(lambda x: round(x, 2) if x is not None else x)
+    df['INSS'] = df['INSS'].apply(lambda x: round(x, 2) if x is not None else x)
 
     print(df)
-
     return render(request, 'Funcionarios/manipulated_data.html', {'df': df.to_html()})
+
