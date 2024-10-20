@@ -8,34 +8,54 @@
     <title>Login</title>
 </head>
 <body>
-    <div class="col-8 m-auto pt-2 pb-2 text-center">
-        <h1>Login</h1>
-    </div>
-    
-    <div class="col-8 m-auto pt-2 pb-2">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    </div>
-    
-    <div class="col-8 m-auto pt-2 pb-2 mb-4">
-        <form name="loginform" id="loginform" action="{% url 'user_login' %}" method="post">
-            {% csrf_token %}
-
-            <div class="form-group">
-                <label for="username">Nome de Usuário:</label>
-                <input type="text" name="username" id="username" class="form-control" required aria-label="Nome de Usuário">
+    <div class="container">
+        <!-- Cabeçalho -->
+        <div class="row justify-content-center pt-5">
+            <div class="col-6 text-center">
+                <h1 class="mb-4">Login</h1>
             </div>
-            
-            <div class="form-group">
-                <label for="password">Senha:</label>
-                <input type="password" name="password" id="password" class="form-control" required aria-label="Senha">
-            </div>
+        </div>
 
-            <input type="submit" class="btn btn-success mt-3" value="Entrar">
-        </form>
+        <!-- Mensagens -->
+        <div class="row justify-content-center">
+            <div class="col-6">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Formulário de Login -->
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form name="loginform" id="loginform" action="{% url 'user_login' %}" method="post" class="border p-4 rounded bg-light shadow-sm">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nome de Usuário:</label>
+                        <input type="text" name="username" id="username" class="form-control" required aria-label="Nome de Usuário">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Senha:</label>
+                        <input type="password" name="password" id="password" class="form-control" required aria-label="Senha">
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">Entrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+
+    <!-- Script do Bootstrap para interação com componentes como alerts -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl9f+3je4I9hNXg7IO4rb79//Yp3y6nrGOSaO6q5KU1Jl7x9AU7wQWOQG2z" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhG81rKdyJ7B8GoVR6hgAMGkflD3EZluP0I5jRiivPHoVYcM0wwF8be9HBI" crossorigin="anonymous"></script>
 </body>
 </html>

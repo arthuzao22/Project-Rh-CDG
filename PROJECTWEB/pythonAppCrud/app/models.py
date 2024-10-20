@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator, EmailValidator
 from django.core.exceptions import ValidationError
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 import re
 
 class Funcionarios(models.Model):
@@ -55,17 +55,19 @@ class Funcionarios(models.Model):
 
 
 class Login(models.Model):
-    username = models.CharField(max_length=150, unique=True, verbose_name='Nome de Usuário')
-    password = models.CharField(max_length=128, verbose_name='Senha')
-    funcionario = models.ForeignKey(Funcionarios, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Funcionário')
+    username = models.CharField(max_length=100, unique=True)
+    password = models.CharField(max_length=128)
+    funcionario = models.ForeignKey('app.Funcionarios', on_delete=models.SET_NULL, null=True, blank=True)
 
-    def save(self, *args, **kwargs):
-        if self.password and not self.password.startswith('pbkdf2_'):
-            self.password = make_password(self.password)
-        super().save(*args, **kwargs)
+    class Meta:
+        verbose_name = 'Login'
+        verbose_name_plural = 'Logins'
 
-    def __str__(self):
-        return self.username
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)
 
 
 class PlanSalario(models.Model):

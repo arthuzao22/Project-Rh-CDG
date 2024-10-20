@@ -71,39 +71,6 @@ def delete(request, pk):
     messages.success(request, "Funcionário deletado com sucesso!")
     return redirect('indexFuncionarios')
 
-# Login de usuário
-def user_login(request):
-    if request.method == "POST":
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                auth_login(request, user)
-                messages.success(request, "Login realizado com sucesso!")
-                return redirect('home')
-            else:
-                messages.error(request, "Nome de usuário ou senha incorretos.")
-    else:
-        form = LoginForm()
-    return render(request, 'login/login.html', {'form': form})
-
-# Criação de login
-def createlogin(request):
-    if request.method == "POST":
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = Login(username=username, password=make_password(password))
-            user.save()
-            messages.success(request, "Usuário criado com sucesso!")
-            return redirect('user_login')
-    else:
-        form = LoginForm()
-    return render(request, 'login/loginform.html', {'form': form})
-
 
 ############################################################## PASTA 'SALARIOS' ####################################################
 
@@ -309,3 +276,41 @@ def manipulate_funcionarios(request):
     print(df)
     return render(request, 'Funcionarios/manipulated_data.html', {'df': df.to_html()})
 
+############################################################## LOGIN ###########################################################
+
+# Login de usuário
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        # Verifica se existe um usuário com o nome de usuário fornecido
+        try:
+            user = Login.objects.get(username=username)
+            
+            # Comparação direta de senha, sem criptografia
+            if user.password == password:
+                # Redirecionar o usuário para a página inicial após o login
+                return redirect('home')
+            else:
+                messages.error(request, 'Senha incorreta. Tente novamente.')
+        except Login.DoesNotExist:
+            messages.error(request, 'Nome de usuário não encontrado.')
+
+    return render(request, 'login/login.html')
+
+
+# Criação de login
+def createlogin(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = Login(username=username, password=make_password(password))
+            user.save()
+            messages.success(request, "Usuário criado com sucesso!")
+            return redirect('user_login')
+    else:
+        form = LoginForm()
+    return render(request, 'login/loginform.html', {'form': form})

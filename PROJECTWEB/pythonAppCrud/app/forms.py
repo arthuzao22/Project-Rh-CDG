@@ -30,16 +30,28 @@ class FuncionariosForm(ModelForm):
         }
 
 
-class LoginForm(ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Senha'}))
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=100, label='Usuário')
+    password = forms.CharField(widget=forms.PasswordInput, label='Senha')
 
-    class Meta:
-        model = Login
-        fields = ['username', 'password']
-        
-        widgets = {
-            'username': forms.TextInput(attrs={'placeholder': 'Nome de Usuário'}),
-        }
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get("username")
+        password = cleaned_data.get("password")
+
+        # Verificar se o usuário existe
+        try:
+            user = Login.objects.get(username=username)
+        except Login.DoesNotExist:
+            raise forms.ValidationError("Usuário não encontrado")
+
+        # Verificar a senha
+        if not user.check_password(password):
+            raise forms.ValidationError("Senha incorreta")
+
+        # Retornar o usuário se o login for bem-sucedido
+        cleaned_data['user'] = user
+        return cleaned_data
 
 class PlanSalarioForm(ModelForm):
     class Meta:
