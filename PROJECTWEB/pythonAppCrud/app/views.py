@@ -9,6 +9,7 @@ import pandas as pd
 import calendar
 from decimal import Decimal, ROUND_HALF_UP
 import math
+from django.shortcuts import render
 import numpy as np
 #from django.contrib.auth.decorators import login_required
 
@@ -260,6 +261,7 @@ def manipulate_funcionarios(request):
     # Obtém dados dos funcionários
     funcionarios = Funcionarios.objects.all()
     data = {
+        'id': [f.id for f in funcionarios],
         'nome': [f.nome for f in funcionarios],
         'registro': [f.registro for f in funcionarios],
         'funcao': [f.funcao for f in funcionarios],
@@ -271,6 +273,7 @@ def manipulate_funcionarios(request):
     # Obtém dados de salários
     salarios = PlanSalario.objects.all()  # Filtra pelo mês e ano
     data_salario = {
+        'id': [s.id for s in salarios],
         'mesAno': [s.mesAno for s in salarios],
         'dias_trabalhados': [s.dias_trabalhados for s in salarios],
         'qtde_dias_Mes': [s.qtde_dias_Mes for s in salarios],
@@ -285,6 +288,7 @@ def manipulate_funcionarios(request):
         'vt': [s.vt for s in salarios],
         'vales_e_faltas': [s.vales_e_faltas for s in salarios],
         'troco': [s.troco for s in salarios],
+        'funcionario_id': [s.funcionario_id for s in salarios],
     }
     
     df = pd.DataFrame(data_salario)
@@ -353,8 +357,11 @@ def manipulate_funcionarios(request):
     df['TotalDescontos'] = df['TotalDescontos'].apply(lambda x: round(x, 2) if x is not None else x)
     df['liquidoPagar'] = df['liquidoPagar'].apply(lambda x: round(x, 2) if x is not None else x)
 
-    print(df)
-    return render(request, 'Funcionarios/manipulated_data.html', {'df': df.to_html()})
+    # Converte df2 em uma lista de dicionários
+    funcionarios_list = df.to_dict(orient='records')
+    
+    # Retorna o template com a lista de dicionários
+    return render(request, 'Salarios/manipulated_data.html', {'funcionarios': funcionarios_list})
 
 ############################################################## LOGIN ###########################################################
 

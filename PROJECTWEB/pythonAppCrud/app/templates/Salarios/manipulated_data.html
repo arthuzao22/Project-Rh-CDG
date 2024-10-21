@@ -3,21 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dados Manipulados</title>
-    <!-- Link do Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Dados dos Funcionários</title>
+    <!-- Incluindo o CSS do Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center mt-5">Dados Manipulados dos Funcionários</h1>
-        <div class="bg-light border rounded p-4 mt-4 shadow">
-            {{ df|safe }}
+        <h1 class="mt-4 mb-4">Dados dos Funcionários</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Mes/Ano</th>
+                        <th>Nome funcionario</th>
+                        <th>Dias Trabalhados</th>
+                        <th>Salario Mes</th>
+                        <th>Arredondamento</th>
+                        <th>Férias</th>
+                        <th>13º Salário (Férias)</th>
+                        <th>Periculosidade</th>
+                        <th>salario familia</th>
+                        <th>Outras entradas</th>
+                        <th>Ajuda de Custo</th>
+                        <th>Premio</th>
+                        <th>Bruto do Mês</th>
+                        <th>INSS</th>
+                        <th>FGTS</th>
+                        <th>vales e faltas</th>
+                        <th>VT</th>
+                        <th>Plano de Saúde</th>
+                        <th>Adiantamento</th>
+                        <th>Troco</th>
+                        <th>Total de Descontos</th>
+                        <th>Liquido a Pagar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for funcionario in funcionarios %}
+                    <tr>
+                        <td>{{ funcionario.mesAno }}</td>
+                        <td>{{ funcionario.funcionario_id }}</td>
+                        <td>{{ funcionario.dias_trabalhados }}/{{ funcionario.qtde_dias_Mes }}</td>
+                        <td>{{ funcionario.salario_Mes }}</td>
+                        <td>{{ funcionario.arred }}</td>
+                        <td>{{ funcionario.ferias }}</td>
+                        <td>{{ funcionario.decimo_terceiro_ferias }}</td>
+                        <td>{{ funcionario.periculosidade }}</td>
+                        <td>{{ funcionario.salario_familia }}</td>
+                        <td>{{ funcionario.outras_entradas }}</td>
+                        <td>Aj</td>
+                        <td>Pr</td>
+                        <td>{{ funcionario.bruto_Mes }}</td>
+                        <td>{{ funcionario.INSS }}</td>
+                        <td>{{ funcionario.FGTS }}</td>
+                        <td>{{ funcionario.vales_e_faltas }}</td>
+                        <td>{{ funcionario.VT }}</td>
+                        <td>{{ funcionario.PlanoDeSaude }}</td>
+                        <td>{{ funcionario.adiantamento }}</td>
+                        <td>{{ funcionario.troco }}</td>
+                        <td>{{ funcionario.TotalDescontos }}</td>
+                        <td>{{ funcionario.liquidoPagar }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- Link do Bootstrap JS e dependências (opcional) -->
+    <!-- Incluindo o JS do Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
