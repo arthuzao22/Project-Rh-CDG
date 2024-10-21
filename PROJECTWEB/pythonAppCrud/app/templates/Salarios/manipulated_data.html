@@ -10,6 +10,13 @@
         body {
             margin: 20px;
         }
+        .group-header {
+            background-color: #f1f1f1;
+            font-weight: bold;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
     </style>
 </head>
 <body>
@@ -18,38 +25,52 @@
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <thead class="thead-light">
+                    <tr class="group-header">
+                        <th colspan="4">Informações Gerais</th>
+                        <th colspan="8">Benefícios e Adicionais</th>
+                        <th colspan="5">Descontos</th>
+                        <th colspan="3">Liquidação</th>
+                    </tr>
                     <tr>
+                        <!-- Informações Gerais -->
                         <th>Mes/Ano</th>
-                        <th>Nome funcionario</th>
+                        <th>Nome Funcionario</th>
                         <th>Dias Trabalhados</th>
-                        <th>Salario Mes</th>
+                        <th>Salario Mês</th>
+
+                        <!-- Benefícios e Adicionais -->
                         <th>Arredondamento</th>
                         <th>Férias</th>
                         <th>13º Salário (Férias)</th>
                         <th>Periculosidade</th>
-                        <th>salario familia</th>
-                        <th>Outras entradas</th>
+                        <th>Salario Família</th>
+                        <th>Outras Entradas</th>
                         <th>Ajuda de Custo</th>
-                        <th>Premio</th>
-                        <th>Bruto do Mês</th>
+
+                        <!-- Descontos -->
                         <th>INSS</th>
                         <th>FGTS</th>
-                        <th>vales e faltas</th>
+                        <th>ir_ferias</th>
+                        <th>Vales e Faltas</th>
                         <th>VT</th>
                         <th>Plano de Saúde</th>
+
+                        <!-- Liquidação -->
                         <th>Adiantamento</th>
-                        <th>Troco</th>
                         <th>Total de Descontos</th>
-                        <th>Liquido a Pagar</th>
+                        <th>Líquido a Pagar</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for funcionario in funcionarios %}
                     <tr>
+                        <!-- Informações Gerais -->
                         <td>{{ funcionario.mesAno }}</td>
                         <td>{{ funcionario.funcionario_id }}</td>
                         <td>{{ funcionario.dias_trabalhados }}/{{ funcionario.qtde_dias_Mes }}</td>
                         <td>{{ funcionario.salario_Mes }}</td>
+
+                        <!-- Benefícios e Adicionais -->
                         <td>{{ funcionario.arred }}</td>
                         <td>{{ funcionario.ferias }}</td>
                         <td>{{ funcionario.decimo_terceiro_ferias }}</td>
@@ -57,15 +78,17 @@
                         <td>{{ funcionario.salario_familia }}</td>
                         <td>{{ funcionario.outras_entradas }}</td>
                         <td>Aj</td>
-                        <td>Pr</td>
-                        <td>{{ funcionario.bruto_Mes }}</td>
+
+                        <!-- Descontos -->
                         <td>{{ funcionario.INSS }}</td>
                         <td>{{ funcionario.FGTS }}</td>
+                        <td>{{ funcionario.ir_ferias }}</td>
                         <td>{{ funcionario.vales_e_faltas }}</td>
                         <td>{{ funcionario.VT }}</td>
                         <td>{{ funcionario.PlanoDeSaude }}</td>
+
+                        <!-- Liquidação -->
                         <td>{{ funcionario.adiantamento }}</td>
-                        <td>{{ funcionario.troco }}</td>
                         <td>{{ funcionario.TotalDescontos }}</td>
                         <td>{{ funcionario.liquidoPagar }}</td>
                     </tr>

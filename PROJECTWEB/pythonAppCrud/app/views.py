@@ -289,6 +289,7 @@ def manipulate_funcionarios(request):
         'vales_e_faltas': [s.vales_e_faltas for s in salarios],
         'troco': [s.troco for s in salarios],
         'funcionario_id': [s.funcionario_id for s in salarios],
+        'ir_ferias': [s.ir_ferias for s in salarios],
     }
     
     df = pd.DataFrame(data_salario)
@@ -308,6 +309,7 @@ def manipulate_funcionarios(request):
     df['coparticipacao'] = df['coparticipacao'].apply(Decimal)
     df['vales_e_faltas'] = df['vales_e_faltas'].apply(Decimal)
     df['troco'] = df['troco'].apply(Decimal)
+    df['ir_ferias'] = df['ir_ferias'].apply(Decimal)
 
 
 
