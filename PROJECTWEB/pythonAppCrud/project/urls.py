@@ -37,6 +37,7 @@ urlpatterns = [
     path('login/', user_login, name='user_login'),
     path('createlogin/', createlogin, name='createlogin'),
 
+
     # Manipulação de Funcionários
     path('manipulate_funcionarios/', manipulate_funcionarios, name='manipulate_funcionarios'),
 

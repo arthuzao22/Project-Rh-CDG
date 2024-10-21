@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.http import HttpResponse
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.hashers import make_password
 from app.forms import FuncionariosForm, LoginForm, PlanSalarioForm
@@ -8,6 +9,8 @@ import pandas as pd
 import calendar
 from decimal import Decimal, ROUND_HALF_UP
 import numpy as np
+#from django.contrib.auth.decorators import login_required
+
 
 
 # Página inicial com todos os funcionários
@@ -298,7 +301,6 @@ def user_login(request):
             messages.error(request, 'Nome de usuário não encontrado.')
 
     return render(request, 'login/login.html')
-
 
 # Criação de login
 def createlogin(request):
