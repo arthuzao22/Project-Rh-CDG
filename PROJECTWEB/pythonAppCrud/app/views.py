@@ -8,6 +8,7 @@ from app.models import Login, Funcionarios, PlanSalario
 import pandas as pd
 import calendar
 from decimal import Decimal, ROUND_HALF_UP
+import math
 import numpy as np
 #from django.contrib.auth.decorators import login_required
 
@@ -196,17 +197,64 @@ def calcular_FGTS(salario_Mes, cargo, ferias=Decimal(0), decimo_terceiro_ferias=
         
     return total * Decimal(0.08)
 
-def calcular_VT(salario_Mes):
+def calcular_VT(salario_Mes, vt):
     # Substitui None por Decimal(0)
-    salario_Mes = salario_Mes if salario_Mes is not None else Decimal(0)
+    if vt not in [2]:
+        salario_Mes = salario_Mes if salario_Mes is not None else Decimal(0)
 
-    # Calcula o VT como 6% do salário
-    vt = salario_Mes * Decimal(0.06)
+        # Calcula o VT como 6% do salário
+        vt = salario_Mes * Decimal(0.06)
 
-    # Arredonda para duas casas decimais
-    vt_arredondado = vt.quantize(Decimal('0.00'), rounding=ROUND_HALF_UP)
-
+        # Arredonda para duas casas decimais
+        vt_arredondado = vt.quantize(Decimal('0.00'), rounding=ROUND_HALF_UP)
+    else:
+        vt_arredondado = Decimal(0)
     return vt_arredondado
+
+def calcular_plano_de_Saude(coparticipacao, mes):
+    coparticipacao = coparticipacao if coparticipacao is not None else Decimal(0)
+    mes = mes if mes is not None else Decimal(0)
+    
+    return(coparticipacao + mes)
+
+def calcular_adiantamento(salario_Mes, cargo):
+    salario_Mes = salario_Mes if salario_Mes is not None else Decimal(0)
+    if cargo not in ["Estagiario", "PJ"]:
+        adiantamento = math.ceil(Decimal(salario_Mes) * Decimal(0.40)) - Decimal(1)
+    else:
+        adiantamento = Decimal(0)
+    
+    return adiantamento
+
+def calcular_total_descontos(INSS, FGTS, ferias, vales_e_faltas, VT, PlanoDeSaude, adiantamento, troco):
+    try:
+        INSS = INSS if INSS is not None else Decimal(0)
+        FGTS = FGTS if FGTS is not None else Decimal(0)
+        ferias = ferias if ferias is not None else Decimal(0)
+        vales_e_faltas = vales_e_faltas if vales_e_faltas is not None else Decimal(0)
+        VT = VT if VT is not None else Decimal(0)
+        PlanoDeSaude = PlanoDeSaude if PlanoDeSaude is not None else Decimal(0)
+        adiantamento = adiantamento if adiantamento is not None else Decimal(0)
+        troco = troco if troco is not None else Decimal(0)
+
+        total_descontos = (INSS + ferias + vales_e_faltas + VT + PlanoDeSaude + adiantamento + troco) - FGTS
+        
+        #print(f"INSS: {INSS}, FGTS: {FGTS}, Ferias: {ferias}, Vales: {vales_e_faltas}, VT: {VT}, Plano: {PlanoDeSaude}, Adiantamento: {adiantamento}, Troco: {troco}")
+        #print(f"Total Descontos: {total_descontos}")
+        
+        return total_descontos
+    except Exception as e:
+        print(f"Erro ao calcular total de descontos: {e}")
+        return None
+    
+def calcular_liquido_pagar(bruto_Mes, TotalDescontos):
+    bruto_Mes = bruto_Mes if bruto_Mes is not None else Decimal(0)
+    TotalDescontos = TotalDescontos if TotalDescontos is not None else Decimal(0)
+    
+    liquido_pagar = bruto_Mes - TotalDescontos
+    
+    return liquido_pagar
+
 
 def manipulate_funcionarios(request):
     # Obtém dados dos funcionários
@@ -232,6 +280,11 @@ def manipulate_funcionarios(request):
         'periculosidade': [s.periculosidade for s in salarios],
         'salario_familia': [s.salario_familia for s in salarios],
         'outras_entradas': [s.outras_entradas for s in salarios],
+        'mes': [s.mes for s in salarios],
+        'coparticipacao': [s.coparticipacao for s in salarios],
+        'vt': [s.vt for s in salarios],
+        'vales_e_faltas': [s.vales_e_faltas for s in salarios],
+        'troco': [s.troco for s in salarios],
     }
     
     df = pd.DataFrame(data_salario)
@@ -247,6 +300,12 @@ def manipulate_funcionarios(request):
     df['periculosidade'] = df['periculosidade'].apply(Decimal)
     df['salario_familia'] = df['salario_familia'].apply(Decimal)
     df['outras_entradas'] = df['outras_entradas'].apply(Decimal)
+    df['mes'] = df['mes'].apply(Decimal)
+    df['coparticipacao'] = df['coparticipacao'].apply(Decimal)
+    df['vales_e_faltas'] = df['vales_e_faltas'].apply(Decimal)
+    df['troco'] = df['troco'].apply(Decimal)
+
+
 
     # Aplica a função com a condição
     df['salario_Mes'] = df.apply(lambda row: calcular_salario_mes(
@@ -269,12 +328,30 @@ def manipulate_funcionarios(request):
         row['salario_Mes'], df2['cargo'][row.name], row['ferias'], row['decimo_terceiro_ferias']), axis=1)
     
     df['VT'] = df.apply(lambda row: calcular_VT(
-        row['salario_Mes']), axis=1)
+        row['salario_Mes'], row['vt']), axis=1)
     
+    df['PlanoDeSaude'] = df.apply(lambda row: calcular_plano_de_Saude(
+        row['coparticipacao'], row['mes']
+    ), axis=1)
+    
+    df['adiantamento'] = df.apply(lambda row: calcular_adiantamento(
+        row['salario_Mes'], df2['cargo'][row.name]
+    ), axis=1)
+    
+    df['TotalDescontos'] = df.apply(lambda row: calcular_total_descontos(
+        row['INSS'], row['FGTS'], row['ferias'], row['vales_e_faltas'], row['VT'], row['PlanoDeSaude'], row['adiantamento'], row['troco']
+    ), axis=1)
+    
+    df['liquidoPagar'] = df.apply(lambda row: calcular_liquido_pagar(
+        row['bruto_Mes'], row['TotalDescontos']
+    ), axis=1)
+        
     # Arredondando bruto_Mes, FGTS e INSS para 2 casas decimais, ignorando None
     df['bruto_Mes'] = df['bruto_Mes'].apply(lambda x: round(x, 2) if x is not None else x)
     df['FGTS'] = df['FGTS'].apply(lambda x: round(x, 2) if x is not None else x)
     df['INSS'] = df['INSS'].apply(lambda x: round(x, 2) if x is not None else x)
+    df['TotalDescontos'] = df['TotalDescontos'].apply(lambda x: round(x, 2) if x is not None else x)
+    df['liquidoPagar'] = df['liquidoPagar'].apply(lambda x: round(x, 2) if x is not None else x)
 
     print(df)
     return render(request, 'Funcionarios/manipulated_data.html', {'df': df.to_html()})

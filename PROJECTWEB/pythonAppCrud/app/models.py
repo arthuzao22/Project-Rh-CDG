@@ -71,10 +71,10 @@ class Login(models.Model):
 
 
 class PlanSalario(models.Model):
-    funcionario = models.ForeignKey(Funcionarios, on_delete=models.CASCADE, verbose_name='Funcionário')
-    mesAno = models.CharField(max_length=15, verbose_name='Mês e Ano')  # Alterado para CharField, conforme solicitado
+    funcionario = models.ForeignKey('Funcionarios', on_delete=models.CASCADE, verbose_name='Funcionário')
+    mesAno = models.CharField(max_length=15, verbose_name='Mês e Ano')  # Alterado para CharField
     dias_trabalhados = models.IntegerField(verbose_name='Dias Trabalhados')
-    qtde_dias_Mes = models.IntegerField(verbose_name='Qtde dias do mes')
+    qtde_dias_Mes = models.IntegerField(verbose_name='Qtde dias do mês')
     arred = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Arredondamento')
     ferias = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Férias')
     decimo_terceiro_ferias = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='13º de Férias')
@@ -86,6 +86,12 @@ class PlanSalario(models.Model):
     vt = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Vale Transporte')
     troco = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Troco')
     geral = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Geral')
+
+    # Novos campos relacionados ao plano de saúde
+    plano_saude = models.CharField(max_length=150, verbose_name='Plano de Saúde')  # Nome do plano de saúde
+    tipo_plano_saude = models.CharField(max_length=150, verbose_name='Tipo de plano de Saúde')
+    coparticipacao = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Coparticipação')  # Valor da coparticipação
+    mes = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='mes')  # Mês de referência para o plano de saúde
 
     def __str__(self):
         return f'Salário de {self.funcionario.nome} - {self.mesAno}'

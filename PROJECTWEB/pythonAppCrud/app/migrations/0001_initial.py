@@ -43,29 +43,35 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='PlanSalario',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nome', models.CharField(max_length=150)),
-                ('mesAno', models.IntegerField()),  # Para filtrar quando for listar o mês de pagamento
-                ('qtde_dias_Mes', models.IntegerField(max_length=15)),  # Para filtrar quando for listar o mês de pagamento
-                ('dias_trabalhados', models.IntegerField()),  # Alterado para IntegerField
-                ('arred', models.DecimalField(max_digits=10, decimal_places=2)),
-                ('ferias', models.DecimalField(max_digits=10, decimal_places=2)),
-                ('decimo_terceiro_ferias', models.DecimalField(max_digits=10, decimal_places=2)),  # Corrigido
-                ('periculosidade', models.DecimalField(max_digits=10, decimal_places=2)),  # Corrigido
-                ('salario_familia', models.DecimalField(max_digits=10, decimal_places=2)),
-                ('outras_entradas', models.DecimalField(max_digits=10, decimal_places=2)),  # Corrigido
-                ('ir_ferias', models.DecimalField(max_digits=10, decimal_places=2)),
-                ('vales_e_faltas', models.DecimalField(max_digits=10, decimal_places=2)),
-                ('vt', models.DecimalField(max_digits=10, decimal_places=2)),
-                ('troco', models.DecimalField(max_digits=10, decimal_places=2)),
-                ('geral', models.DecimalField(max_digits=10, decimal_places=2)),
-                ('funcionario', models.ForeignKey(on_delete=models.CASCADE, to='app.Funcionarios')),
-            ],
-            options={
-                'verbose_name': 'Plano de Salário',
-                'verbose_name_plural': 'Planos de Salário',
-            },
-        ),
+    name='PlanSalario',
+    fields=[
+        ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('nome', models.CharField(max_length=150)),
+        ('mesAno', models.IntegerField()),  # Para o mês e ano de referência
+        ('qtde_dias_Mes', models.IntegerField()), 
+        ('dias_trabalhados', models.IntegerField()), 
+        ('arred', models.DecimalField(max_digits=10, decimal_places=2)),
+        ('ferias', models.DecimalField(max_digits=10, decimal_places=2)),
+        ('decimo_terceiro_ferias', models.DecimalField(max_digits=10, decimal_places=2)),
+        ('periculosidade', models.DecimalField(max_digits=10, decimal_places=2)),
+        ('salario_familia', models.DecimalField(max_digits=10, decimal_places=2)),
+        ('outras_entradas', models.DecimalField(max_digits=10, decimal_places=2)),
+        ('ir_ferias', models.DecimalField(max_digits=10, decimal_places=2)),
+        ('vales_e_faltas', models.DecimalField(max_digits=10, decimal_places=2)),
+        ('vt', models.DecimalField(max_digits=10, decimal_places=2)),
+        ('troco', models.DecimalField(max_digits=10, decimal_places=2)),
+        ('geral', models.DecimalField(max_digits=10, decimal_places=2)),
+        # Novos campos relacionados ao plano de saúde
+        ('plano_saude', models.CharField(max_length=150)),  # Nome do plano de saúde
+        ('tipo_plano_saude', models.CharField(max_length=150)),  # Nome do plano de saúde
+        ('coparticipacao', models.DecimalField(max_digits=10, decimal_places=2)),  # Valor da coparticipação
+        ('mes', models.DecimalField(max_digits=10, decimal_places=2)),  # Mês de referência para o plano de saúde
+        ('funcionario', models.ForeignKey(on_delete=models.CASCADE, to='app.Funcionarios')),
+    ],
+    options={
+        'verbose_name': 'Plano de Salário',
+        'verbose_name_plural': 'Planos de Salário',
+    },
+)
+
     ]

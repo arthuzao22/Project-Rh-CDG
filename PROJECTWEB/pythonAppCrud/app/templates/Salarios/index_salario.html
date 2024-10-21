@@ -127,7 +127,14 @@
                         <td>R${{ planfuncionario.outras_entradas }}</td>
                         <td>R${{ planfuncionario.ir_ferias }}</td>
                         <td>R${{ planfuncionario.vales_e_faltas }}</td>
-                        <td>R${{ planfuncionario.vt }}</td>
+                        <td>
+                            {% if planfuncionario.vt == 1 %}
+                                Não possui
+                            {% else %}
+                                Possui
+                            {% endif %}
+                        </td>
+                        
                         <td>R${{ planfuncionario.troco }}</td>
                         <td>R${{ planfuncionario.geral }}</td>
                         <td>

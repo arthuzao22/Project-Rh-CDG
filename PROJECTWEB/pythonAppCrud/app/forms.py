@@ -72,6 +72,10 @@ class PlanSalarioForm(ModelForm):
             'vt', 
             'troco', 
             'geral', 
+            'plano_saude',
+            'tipo_plano_saude',
+            'coparticipacao',
+            'mes',
         ]
         
         widgets = {
