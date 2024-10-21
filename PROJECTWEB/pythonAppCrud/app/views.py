@@ -13,7 +13,7 @@ import numpy as np
 
 
 
-# Página inicial com todos os funcionários
+# Página inicial
 def home(request):
     data = {'db': Funcionarios.objects.all()}
     return render(request, 'index.html', data)

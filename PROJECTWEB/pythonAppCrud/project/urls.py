@@ -22,7 +22,7 @@ from app.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home, name='home'),
+    path('home', home, name='home'),
     path('form/', form, name='form'),
     path('create/', create, name='create'),
     
@@ -34,7 +34,7 @@ urlpatterns = [
     path('delete/<int:pk>/', delete, name='delete'),
 
     # Login URLs
-    path('login/', user_login, name='user_login'),
+    path('', user_login, name='user_login'),
     path('createlogin/', createlogin, name='createlogin'),
 
 
