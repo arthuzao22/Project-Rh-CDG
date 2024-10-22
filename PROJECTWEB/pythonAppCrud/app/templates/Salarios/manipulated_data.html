@@ -22,6 +22,24 @@
 <body>
     <div class="container">
         <h1 class="mt-4 mb-4">Dados dos Funcionários</h1>
+        <div class="col-12 col-md-8 m-auto align-center">
+            <form method="GET" action="{% url 'manipulate_funcionarios' %}">
+                <div class="row">
+                    <div class="col">
+                        <input type="month" class="form-control" name="mesAno" placeholder="Mês/Ano">
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" name="nome" placeholder="Nome do Funcionário">
+                    </div>
+                    <div class="col">
+                        <div id="botoes-iniciais">
+                            <button type="submit" class="btn btn-primary mb-4">Filtrar</button>
+                            <a href="/form_salario" class="btn btn-success mb-4">Adicionar</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <thead class="thead-light">
@@ -66,7 +84,7 @@
                     <tr>
                         <!-- Informações Gerais -->
                         <td>{{ funcionario.mesAno }}</td>
-                        <td>{{ funcionario.funcionario_id }}</td>
+                        <td>{{ funcionario.nome }}</td>
                         <td>{{ funcionario.dias_trabalhados }}/{{ funcionario.qtde_dias_Mes }}</td>
                         <td>{{ funcionario.salario_Mes }}</td>
 

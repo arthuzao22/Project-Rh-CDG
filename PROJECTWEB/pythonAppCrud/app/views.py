@@ -311,8 +311,6 @@ def manipulate_funcionarios(request):
     df['troco'] = df['troco'].apply(Decimal)
     df['ir_ferias'] = df['ir_ferias'].apply(Decimal)
 
-
-
     # Aplica a função com a condição
     df['salario_Mes'] = df.apply(lambda row: calcular_salario_mes(
         df2['salario'][row.name], row['qtde_dias_Mes'], row['dias_trabalhados']), axis=1)
@@ -359,11 +357,26 @@ def manipulate_funcionarios(request):
     df['TotalDescontos'] = df['TotalDescontos'].apply(lambda x: round(x, 2) if x is not None else x)
     df['liquidoPagar'] = df['liquidoPagar'].apply(lambda x: round(x, 2) if x is not None else x)
 
-    # Converte df2 em uma lista de dicionários
-    funcionarios_list = df.to_dict(orient='records')
+    # Serve para unir df e o df2
+    df_left_join = pd.merge(df2, df, left_on='id', right_on='funcionario_id', how='inner')
+    
+    ############################ FILTRAR ##############################
+    mesAno = request.GET.get('mesAno')
+    nome = request.GET.get('nome')
+
+    if mesAno:
+        df_left_join = df_left_join[df_left_join['mesAno'] == mesAno]
+
+    if nome:
+        df_left_join = df_left_join[df_left_join['nome'] == nome]
+    ############################ ------- ##############################
+    
+    funcionarios_list = df_left_join.to_dict(orient='records')
     
     # Retorna o template com a lista de dicionários
     return render(request, 'Salarios/manipulated_data.html', {'funcionarios': funcionarios_list})
+
+
 
 ############################################################## LOGIN ###########################################################
 
