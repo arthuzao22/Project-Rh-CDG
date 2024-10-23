@@ -35,7 +35,6 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('username', models.CharField(max_length=100, unique=True)),
                 ('password', models.CharField(max_length=128)),
-                ('funcionario', models.ForeignKey(on_delete=models.SET_NULL, to='app.Funcionarios', null=True, blank=True)),
             ],
             options={
                 'verbose_name': 'Login',

@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth import views as auth_views
+
 from app.views import (
     home,
     form,
@@ -22,7 +24,7 @@ from app.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', home, name='home'),
+    path('home/', home, name='home'), # login
     path('form/', form, name='form'),
     path('create/', create, name='create'),
     
@@ -34,7 +36,7 @@ urlpatterns = [
     path('delete/<int:pk>/', delete, name='delete'),
 
     # Login URLs
-    path('', user_login, name='user_login'),
+    path('login', user_login, name='user_login'),
     path('createlogin/', createlogin, name='createlogin'),
 
 

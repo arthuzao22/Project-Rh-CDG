@@ -11,14 +11,15 @@ from decimal import Decimal, ROUND_HALF_UP
 import math
 from django.shortcuts import render
 import numpy as np
-#from django.contrib.auth.decorators import login_required
-
-
+from django.contrib.auth.decorators import login_required
 
 # Página inicial
 def home(request):
-    data = {'db': Funcionarios.objects.all()}
-    return render(request, 'index.html', data)
+    if request.user.is_authenticated:
+        data = {'db': Funcionarios.objects.all()}
+        return render(request, 'index.html', data)
+    else:
+        return render(request, 'login/login.html')
 
 # Exibe formulário de cadastro de funcionário
 def form(request):
@@ -58,16 +59,19 @@ def update(request, pk):
 # Listagem de funcionários
 def indexFuncionarios(request):
     # Obtém os parâmetros de mês e ano da requisição (GET)
-    status = request.GET.get('status')
+    if request.user.is_authenticated:
+        status = request.GET.get('status')
 
-    if status:
-        data = {
-            'db': Funcionarios.objects.filter(status=status)
-        }
+        if status:
+            data = {
+                'db': Funcionarios.objects.filter(status=status)
+            }
+        else:
+            data = {'db': Funcionarios.objects.all()}
+
+        return render(request, 'Funcionarios/indexFuncionarios.html', data)
     else:
-        data = {'db': Funcionarios.objects.all()}
-        
-    return render(request, 'Funcionarios/indexFuncionarios.html', data)
+        return render(request, 'login/login.html')
 
 # Deletar funcionário
 def delete(request, pk):
@@ -388,10 +392,8 @@ def user_login(request):
         
         # Verifica se existe um usuário com o nome de usuário fornecido
         try:
-            user = Login.objects.get(username=username)
-            
-            # Comparação direta de senha, sem criptografia
-            if user.password == password:
+            user = authenticate(username=username, password=password)
+            if user:
                 # Redirecionar o usuário para a página inicial após o login
                 return redirect('home')
             else:
@@ -403,15 +405,11 @@ def user_login(request):
 
 # Criação de login
 def createlogin(request):
-    if request.method == "POST":
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = Login(username=username, password=make_password(password))
-            user.save()
-            messages.success(request, "Usuário criado com sucesso!")
-            return redirect('user_login')
-    else:
-        form = LoginForm()
-    return render(request, 'login/loginform.html', {'form': form})
+    form = LoginForm(request.POST)
+    if not form.is_valid():
+       return render(request, 'login/loginForm.html', {'form': form})
+
+    c = form.save(commit=False)
+    c.password = make_password(c.password)
+    c.save()
+    return HttpResponseRedirect('/')

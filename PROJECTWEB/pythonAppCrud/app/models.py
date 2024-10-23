@@ -56,18 +56,11 @@ class Funcionarios(models.Model):
 
 class Login(models.Model):
     username = models.CharField(max_length=100, unique=True)
-    password = models.CharField(max_length=128)
-    funcionario = models.ForeignKey('app.Funcionarios', on_delete=models.SET_NULL, null=True, blank=True)
+    password = models.CharField(max_length=100)  # Não é recomendável armazenar senhas em texto puro
+    # Adicione outros campos necessários
 
-    class Meta:
-        verbose_name = 'Login'
-        verbose_name_plural = 'Logins'
-
-    def set_password(self, raw_password):
-        self.password = make_password(raw_password)
-
-    def check_password(self, raw_password):
-        return check_password(raw_password, self.password)
+    def __str__(self):
+        return self.username
 
 
 class PlanSalario(models.Model):

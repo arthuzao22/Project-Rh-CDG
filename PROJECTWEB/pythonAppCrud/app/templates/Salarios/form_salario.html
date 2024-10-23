@@ -57,67 +57,68 @@
 
                 <div class="form-group mb-3">
                     <label for="id_mesAno">Mês e Ano:</label>
-                    <input type="month" class="form-control" id="id_mesAno" name="mesAno" value="{{ form.mesAno.value }}">
+                    <input type="month" class="form-control" id="id_mesAno" name="mesAno" value="{{ form.mesAno.value }}" oninput="diasDoMes()">
                     {{ form.mesAno.errors }}
                 </div>
-
+                
                 <div class="form-group mb-3">
-                    <label for="id_qtde_dias_Mes">Informe a qtde de dias do mes:</label>
-                    <input type="number" class="form-control" id="qtde_dias_Mes" name="qtde_dias_Mes" value="{{ form.qtde_dias_Mes.value }}">
-                    {{ form.mesAno.errors }}
+                    <input type="hidden" class="form-control" id="qtde_dias_Mes_input" name="qtde_dias_Mes" value="{{ form.qtde_dias_Mes.value }}">
+                    {% if form.qtde_dias_Mes.errors %}
+                        <div class="text-danger">{{ form.qtde_dias_Mes.errors }}</div>
+                    {% endif %}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_dias_trabalhados">Dias Trabalhados:</label>
-                    <input type="number" class="form-control" id="id_dias_trabalhados" name="dias_trabalhados" value="{{ form.dias_trabalhados.value }}">
+                    <input type="number" step="0.01" class="form-control" id="id_dias_trabalhados" name="dias_trabalhados" value="{{ form.dias_trabalhados.value }}">
                     {{ form.dias_trabalhados.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_arred">Arredondamento:</label>
-                    <input type="number" class="form-control" id="id_arred" name="arred" value="{{ form.arred.value }}">
+                    <input type="number" step="0.01" class="form-control" id="id_arred" name="arred" value="{{ form.arred.value }}">
                     {{ form.arred.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_ferias">Férias:</label>
-                    <input type="number" class="form-control" id="id_ferias" name="ferias" value="{{ form.ferias.value }}">
+                    <input type="number" step="0.01" class="form-control" id="id_ferias" name="ferias" value="{{ form.ferias.value }}">
                     {{ form.ferias.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_decimo_terceiro_ferias">13º Férias:</label>
-                    <input type="number" class="form-control" id="id_decimo_terceiro_ferias" name="decimo_terceiro_ferias" value="{{ form.decimo_terceiro_ferias.value }}">
+                    <input type="number" step="0.01" class="form-control" id="id_decimo_terceiro_ferias" name="decimo_terceiro_ferias" value="{{ form.decimo_terceiro_ferias.value }}">
                     {{ form.decimo_terceiro_ferias.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_periculosidade">Periculosidade:</label>
-                    <input type="number" class="form-control" id="id_periculosidade" name="periculosidade" value="{{ form.periculosidade.value }}">
+                    <input type="number" step="0.01" class="form-control" id="id_periculosidade" name="periculosidade" value="{{ form.periculosidade.value }}">
                     {{ form.periculosidade.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_salario_familia">Salário Família:</label>
-                    <input type="number" class="form-control" id="id_salario_familia" name="salario_familia" value="{{ form.salario_familia.value }}">
+                    <input type="number" step="0.01" class="form-control" id="id_salario_familia" name="salario_familia" value="{{ form.salario_familia.value }}">
                     {{ form.salario_familia.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_outras_entradas">Outras Entradas:</label>
-                    <input type="number" class="form-control" id="id_outras_entradas" name="outras_entradas" value="{{ form.outras_entradas.value }}">
+                    <input type="number" step="0.01" class="form-control" id="id_outras_entradas" name="outras_entradas" value="{{ form.outras_entradas.value }}">
                     {{ form.outras_entradas.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_ir_ferias">IR Férias:</label>
-                    <input type="number" class="form-control" id="id_ir_ferias" name="ir_ferias" value="{{ form.ir_ferias.value }}">
+                    <input type="number" step="0.01" class="form-control" id="id_ir_ferias" name="ir_ferias" value="{{ form.ir_ferias.value }}">
                     {{ form.ir_ferias.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_vales_e_faltas">Vales e Faltas:</label>
-                    <input type="number" class="form-control" id="id_vales_e_faltas" name="vales_e_faltas" value="{{ form.vales_e_faltas.value }}">
+                    <input type="number" step="0.01" class="form-control" id="id_vales_e_faltas" name="vales_e_faltas" value="{{ form.vales_e_faltas.value }}">
                     {{ form.vales_e_faltas.errors }}
                 </div>
 
@@ -131,13 +132,13 @@
 
                 <div class="form-group mb-3">
                     <label for="id_troco">Troco:</label>
-                    <input type="number" class="form-control" id="id_troco" name="troco" value="{{ form.troco.value }}">
+                    <input type="number" step="0.01" class="form-control" id="id_troco" name="troco" value="{{ form.troco.value }}">
                     {{ form.troco.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_geral">Geral:</label>
-                    <input type="number" class="form-control" id="id_geral" name="geral" value="{{ form.geral.value }}">
+                    <input type="number" step="0.01" class="form-control" id="id_geral" name="geral" value="{{ form.geral.value }}">
                     {{ form.geral.errors }}
                 </div>
 
@@ -197,6 +198,26 @@
             }
             return true; // Permitir o envio do formulário
         }
+
+        function diasDoMes() {
+            const qtde_dias_Mes = document.getElementById('qtde_dias_Mes');
+            const id_mesAno = document.getElementById('id_mesAno').value; // Pega o valor digitado
+            
+            console.log(id_mesAno); // Mostra no console o que foi digitado
+
+            const partes = id_mesAno.split('-'); // Supondo que o formato seja 'MM/AAAA'
+            const ano = parseInt(partes[0], 10);
+            const mes = parseInt(partes[1], 10);
+
+            if (mes >= 1 && mes <= 12 && !isNaN(ano)) {
+                const dias = new Date(ano, mes, 0).getDate(); // Pega o número de dias do mês
+                document.getElementById("qtde_dias_Mes_input").value = dias;
+            } else {
+                alert('formato de data errado')
+            }
+        }
+        window.onload = calcularDiasNoMes;
+
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-8O0c3P1wq3ZZ+znt3H3ExDgOasHjGTR9I8H3zxk8s0hcIwFCRXGRmbGNCgRnlRk6" crossorigin="anonymous"></script>
