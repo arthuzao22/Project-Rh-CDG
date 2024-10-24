@@ -20,6 +20,7 @@ from app.views import (
     edit_salario,
     update_salario,
     delete_salario,
+    formEditSalario,
 )
 
 urlpatterns = [
@@ -45,6 +46,7 @@ urlpatterns = [
 
     # Salários dos Funcionários URLs
     path('form_salario/', form_salario, name='form_salario'),
+    path('formEditSalario/', formEditSalario, name='formEditSalario'),
     path('create_salario_funcionario/', create_salario_funcionario, name='create_salario_funcionario'),
     path('index_salario/', index_salario, name='index_salario'),
     path('edit_salario/<int:pk>/', edit_salario, name='edit_salario'),

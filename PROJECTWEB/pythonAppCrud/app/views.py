@@ -94,7 +94,7 @@ def create_salario_funcionario(request):
 def edit_salario(request, pk):
     funcionario_salario = get_object_or_404(PlanSalario, pk=pk)
     form = PlanSalarioForm(instance=funcionario_salario)
-    return render(request, 'Salarios/form_salario.html', {'form': form, 'db': funcionario_salario})
+    return render(request, 'Salarios/formEditSalario.html', {'form': form, 'db': funcionario_salario})
 
 # Atualização de salário de funcionário
 def update_salario(request, pk):
@@ -104,7 +104,7 @@ def update_salario(request, pk):
         form.save()
         messages.success(request, "Salário do Funcionário atualizado com sucesso!")
         return redirect('index_salario')
-    return render(request, 'Salarios/form_salario.html', {'form': form, 'db': funcionario_salario})
+    return render(request, 'Salarios/formEditSalario.html', {'form': form, 'db': funcionario_salario})
 
 def index_salario(request):
     # Obtém os parâmetros de mês, ano e status (ativo/inativo) da requisição (GET)
@@ -142,6 +142,11 @@ def delete_salario(request, pk):
 def form_salario(request):
     data = {'form': PlanSalarioForm()}
     return render(request, 'Salarios/form_salario.html', data)
+
+# Exibir formulário de salário
+def formEditSalario(request):
+    data = {'form': PlanSalarioForm()}
+    return render(request, 'Salarios/formEditSalario.html', data)
 
 
 ############################################################## RELATORIO SALARIO MENSAL ####################################################

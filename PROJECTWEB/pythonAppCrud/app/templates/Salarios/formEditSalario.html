@@ -43,7 +43,7 @@
 
     <div class="container mt-5">
         <div class="col-8 m-auto">
-            <form name="form" id="form" action="{% if db %}{% url 'create_salario_funcionario' %}{% endif %}" method="post" onsubmit="return validateForm()">
+            <form name="form" id="form" action="{% url 'update_salario' db.id %}" method="post" onsubmit="return validateForm()">
                 {% csrf_token %}
                 
                 <div class="form-group mb-3">
@@ -70,55 +70,55 @@
 
                 <div class="form-group mb-3">
                     <label for="id_dias_trabalhados">Dias Trabalhados:</label>
-                    <input type="number" step="0.01" class="form-control" id="id_dias_trabalhados" name="dias_trabalhados" value="{{ form.dias_trabalhados.value }}">
+                    <input   class="form-control" id="id_dias_trabalhados" name="dias_trabalhados" value="{{ form.dias_trabalhados.value }}">
                     {{ form.dias_trabalhados.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_arred">Arredondamento:</label>
-                    <input type="number" step="0.01" class="form-control" id="id_arred" name="arred" value="{{ form.arred.value }}">
+                    <input   class="form-control" id="id_arred" name="arred" value="{{ form.arred.value }}">
                     {{ form.arred.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_ferias">Férias:</label>
-                    <input type="number" step="0.01" class="form-control" id="id_ferias" name="ferias" value="{{ form.ferias.value }}">
+                    <input   class="form-control" id="id_ferias" name="ferias" value="{{ form.ferias.value }}">
                     {{ form.ferias.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_decimo_terceiro_ferias">13º Férias:</label>
-                    <input type="number" step="0.01" class="form-control" id="id_decimo_terceiro_ferias" name="decimo_terceiro_ferias" value="{{ form.decimo_terceiro_ferias.value }}">
+                    <input   class="form-control" id="id_decimo_terceiro_ferias" name="decimo_terceiro_ferias" value="{{ form.decimo_terceiro_ferias.value }}">
                     {{ form.decimo_terceiro_ferias.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_periculosidade">Periculosidade:</label>
-                    <input type="number" step="0.01" class="form-control" id="id_periculosidade" name="periculosidade" value="{{ form.periculosidade.value }}">
+                    <input   class="form-control" id="id_periculosidade" name="periculosidade" value="{{ form.periculosidade.value }}">
                     {{ form.periculosidade.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_salario_familia">Salário Família:</label>
-                    <input type="number" step="0.01" class="form-control" id="id_salario_familia" name="salario_familia" value="{{ form.salario_familia.value }}">
+                    <input   class="form-control" id="id_salario_familia" name="salario_familia" value="{{ form.salario_familia.value }}">
                     {{ form.salario_familia.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_outras_entradas">Outras Entradas:</label>
-                    <input type="number" step="0.01" class="form-control" id="id_outras_entradas" name="outras_entradas" value="{{ form.outras_entradas.value }}">
+                    <input   class="form-control" id="id_outras_entradas" name="outras_entradas" value="{{ form.outras_entradas.value }}">
                     {{ form.outras_entradas.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_ir_ferias">IR Férias:</label>
-                    <input type="number" step="0.01" class="form-control" id="id_ir_ferias" name="ir_ferias" value="{{ form.ir_ferias.value }}">
+                    <input   class="form-control" id="id_ir_ferias" name="ir_ferias" value="{{ form.ir_ferias.value }}">
                     {{ form.ir_ferias.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_vales_e_faltas">Vales e Faltas:</label>
-                    <input type="number" step="0.01" class="form-control" id="id_vales_e_faltas" name="vales_e_faltas" value="{{ form.vales_e_faltas.value }}">
+                    <input   class="form-control" id="id_vales_e_faltas" name="vales_e_faltas" value="{{ form.vales_e_faltas.value }}">
                     {{ form.vales_e_faltas.errors }}
                 </div>
 
@@ -132,13 +132,13 @@
 
                 <div class="form-group mb-3">
                     <label for="id_troco">Troco:</label>
-                    <input type="number" step="0.01" class="form-control" id="id_troco" name="troco" value="{{ form.troco.value }}">
+                    <input class="form-control" id="id_troco" name="troco" value="{{ form.troco.value }}">
                     {{ form.troco.errors }}
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="id_geral">Geral:</label>
-                    <input type="number" step="0.01" class="form-control" id="id_geral" name="geral" value="{{ form.geral.value }}">
+                    <input class="form-control" id="id_geral" name="geral" value="{{ form.geral.value }}">
                     {{ form.geral.errors }}
                 </div>
 
@@ -151,19 +151,19 @@
                 <div id="plano_saude_fields" class="hidden">
                     <div class="form-group mb-3">
                         <label for="id_plano_saude">Nome do Plano de Saúde:</label>
-                        <input type="text" class="form-control" id="id_plano_saude" name="plano_saude" value="">
+                        <input class="form-control" id="id_plano_saude" name="plano_saude" value="">
                     </div>
                     <div class="form-group mb-3">
                         <label for="id_tipo_plano_saude">Tipo do Plano de Saúde:</label>
-                        <input type="text" class="form-control" id="id_tipo_plano_saude" name="tipo_plano_saude" value="">
+                        <input  class="form-control" id="id_tipo_plano_saude" name="tipo_plano_saude" value="">
                     </div>
                     <div class="form-group mb-3">
                         <label for="id_coparticipacao">Valor da Coparticipação:</label>
-                        <input type="number" class="form-control" id="id_coparticipacao" name="coparticipacao" value="">
+                        <input  class="form-control" id="id_coparticipacao" name="coparticipacao" value="">
                     </div>
                     <div class="form-group mb-3">
                         <label for="id_mes">Mês de Referência do Plano:</label>
-                        <input type="number" class="form-control" id="id_mes" name="mes" value="">
+                        <input  class="form-control" id="id_mes" name="mes" value="">
                     </div>
                 </div>
 
@@ -217,7 +217,41 @@
             }
         }
         window.onload = calcularDiasNoMes;
-
+        function validateForm() {
+            // Definindo valores para null se não forem preenchidos
+            const planoSaude = document.querySelector('input[name="tem_plano"]:checked');
+            if (planoSaude && planoSaude.value === 'nao') {
+                document.getElementById('id_plano_saude').value = 'null';
+                document.getElementById('id_tipo_plano_saude').value = 'null';
+                document.getElementById('id_coparticipacao').value = 0;
+                document.getElementById('id_mes').value = 0;
+            }
+        
+            // Troca vírgula por ponto nos campos que precisam
+            const fieldsToCheck = [
+                'id_dias_trabalhados',
+                'id_arred',
+                'id_ferias',
+                'id_decimo_terceiro_ferias',
+                'id_periculosidade',
+                'id_salario_familia',
+                'id_outras_entradas',
+                'id_ir_ferias',
+                'id_vales_e_faltas',
+                'id_troco',
+                'id_geral'
+            ];
+        
+            fieldsToCheck.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field && field.value.includes(',')) {
+                    field.value = field.value.replace(/,/g, '.');
+                }
+            });
+        
+            return true; // Permitir o envio do formulário
+        }
+        
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-8O0c3P1wq3ZZ+znt3H3ExDgOasHjGTR9I8H3zxk8s0hcIwFCRXGRmbGNCgRnlRk6" crossorigin="anonymous"></script>
