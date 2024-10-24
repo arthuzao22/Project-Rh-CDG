@@ -15,11 +15,11 @@ from django.contrib.auth.decorators import login_required
 
 # Página inicial
 def home(request):
-    if request.user.is_authenticated:
+    #if request.user.is_authenticated:
         data = {'db': Funcionarios.objects.all()}
         return render(request, 'index.html', data)
-    else:
-        return render(request, 'login/login.html')
+    #else:
+        #return render(request, 'login/login.html')
 
 # Exibe formulário de cadastro de funcionário
 def form(request):
@@ -59,19 +59,17 @@ def update(request, pk):
 # Listagem de funcionários
 def indexFuncionarios(request):
     # Obtém os parâmetros de mês e ano da requisição (GET)
-    if request.user.is_authenticated:
-        status = request.GET.get('status')
-
-        if status:
-            data = {
-                'db': Funcionarios.objects.filter(status=status)
-            }
-        else:
-            data = {'db': Funcionarios.objects.all()}
-
-        return render(request, 'Funcionarios/indexFuncionarios.html', data)
+    #if request.user.is_authenticated:
+    status = request.GET.get('status')
+    if status:
+        data = {
+            'db': Funcionarios.objects.filter(status=status)
+        }
     else:
-        return render(request, 'login/login.html')
+        data = {'db': Funcionarios.objects.all()}
+    return render(request, 'Funcionarios/indexFuncionarios.html', data)
+    #else:
+       # return render(request, 'login/login.html')
 
 # Deletar funcionário
 def delete(request, pk):
