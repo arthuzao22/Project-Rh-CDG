@@ -33,5 +33,10 @@ function baixarExcel() {
     document.body.removeChild(link);
 }
 
-
+function deletarAlert(planfuncionarioId, usuarioId) {
+    // Se o usuário confirmar, redireciona para a página de deleção
+    if (confirm(`Você deseja realmente excluir este registro?${planfuncionarioId}`)) {
+        window.location.href = `/delete_salario/${planfuncionarioId}/`;
+    }
+}
 
