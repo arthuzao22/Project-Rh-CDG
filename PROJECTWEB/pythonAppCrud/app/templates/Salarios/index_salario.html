@@ -1,259 +1,179 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.84.0">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Template · Bootstrap v5.0</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
     <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
     <link href="{% static 'css/dashboard.rtl.css' %}" rel="stylesheet">
-
-
     <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-      th {
-        text-align: center;
-      }
-      tr{
-        text-align: center;
-        white-space: nowrap;
-      }
-      .table {
-        border: 1px solid black; /* Borda na tabela */
-        border-collapse: collapse; /* Colapsa as bordas para que não haja espaço entre elas */
-      }
-      
-      .table th, .table td {
-        border: 1px solid black; /* Borda nas células */
-        padding: 8px; /* Espaçamento interno para as células */
-      }
-    
-      .table th {
-        background-color: #f2f2f2; /* Cor de fundo opcional para cabeçalho */
-      }
-    
+        .bd-placeholder-img {font-size: 1.125rem;text-anchor: middle;-webkit-user-select: none;-moz-user-select: none;user-select: none;}
+        @media (min-width: 768px) {.bd-placeholder-img-lg {font-size: 3.5rem;}}
+        th{text-align: center;}
+        tr{text-align: center;white-space: nowrap;}
+        .table{border: 1px solid black;border-collapse: collapse;}
+        .table th,.table td{border: 1px solid black;padding: 8px;}
+        .table th{background-color: #f2f2f2;}
     </style>
+</head>
+<body>
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">CDG</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-nav">
+            <div class="nav-item text-nowrap">
+                <a class="nav-link px-3" href="#">Sign out</a>
+            </div>
+        </div>
+    </header>
 
-  </head>
-  <body>
-    
-<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">CDG</a>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="navbar-nav">
-    <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#">Sign out</a>
-    </div>
-  </div>
-</header>
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/home"><span data-feather="home"></span>Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/indexFuncionarios"><span data-feather="file"></span>Funcionarios</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/manipulate_funcionarios"><span data-feather="shopping-cart"></span>Salario calculado</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/index_salario"><span data-feather="users"></span>Edit. salario</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#"><span data-feather="bar-chart-2"></span>Reports</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#"><span data-feather="layers"></span>Integrations</a></li>
+                    </ul>
 
-<div class="container-fluid">
-  <div class="row">
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="position-sticky pt-3">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/home">
-              <span data-feather="home"></span>
-              Home
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/indexFuncionarios">
-              <span data-feather="file"></span>
-              Funcionarios
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/manipulate_funcionarios">
-              <span data-feather="shopping-cart"></span>
-              Salario calculado 
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/index_salario">
-              <span data-feather="users"></span>
-              Edit. salario 
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="bar-chart-2"></span>
-              Reports
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="layers"></span>
-              Integrations
-            </a>
-          </li>
-        </ul>
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>Saved reports</span>
+                        <a class="link-secondary" href="#" aria-label="Add a new report"><span data-feather="plus-circle"></span></a>
+                    </h6>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item"><a class="nav-link" href="#"><span data-feather="file-text"></span>Current month</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#"><span data-feather="file-text"></span>Last quarter</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#"><span data-feather="file-text"></span>Social engagement</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#"><span data-feather="file-text"></span>Year-end sale</a></li>
+                    </ul>
+                </div>
+            </nav>
 
-        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          <span>Saved reports</span>
-          <a class="link-secondary" href="#" aria-label="Add a new report">
-            <span data-feather="plus-circle"></span>
-          </a>
-        </h6>
-        <ul class="nav flex-column mb-2">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Current month
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Last quarter
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Social engagement
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Year-end sale
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Salarios</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <form method="GET" action="{% url 'index_salario' %}" class="mb-2 mb-md-0">
-                <div class="row">
-                    <div class="col">
-                        <input type="month" class="form-control" name="mesAno" placeholder="Mês/Ano">
-                    </div>
-                    <div class="col">
-                        <input type="text" class="form-control" name="nome" placeholder="Nome do Funcionário">
-                    </div>
-                    <div class="col">
-                        <select id="status" name="status" class="form-control">
-                            <option value="">Selecione um status</option>
-                            <option value="Ativo">Ativo</option>
-                            <option value="Inativo">Inativo</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <div class="btn-toolbar">
-                            <div class="btn-group me-2">
-                                <button type="submit" class="btn btn-sm btn-outline-secondary">Filtrar</button>
-                                <a href="/form_salario" class="btn btn-sm btn-outline-secondary">Adicionar</a>
-                                <a onclick="baixarExcel()" class="btn btn-sm btn-outline-secondary">Exportar</a>
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Salarios</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <form method="GET" action="{% url 'index_salario' %}" class="mb-2 mb-md-0">
+                            <div class="row">
+                                <div class="col"><input type="month" class="form-control" name="mesAno" placeholder="Mês/Ano"></div>
+                                <div class="col"><input type="text" class="form-control" name="nome" placeholder="Nome do Funcionário"></div>
+                                <div class="col"><select id="status" name="status" class="form-control"><option value="">Selecione um status</option><option value="Ativo">Ativo</option><option value="Inativo">Inativo</option></select></div>
+                                <div class="col"><div class="btn-toolbar"><div class="btn-group me-2"><button type="submit" class="btn btn-sm btn-outline-secondary">Filtrar</button><a href="/form_salario" class="btn btn-sm btn-outline-secondary">Adicionar</a><a onclick="baixarExcel()" class="btn btn-sm btn-outline-secondary">Exportar</a></div></div></div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
-            </form>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm" id="indexsalario">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Ações</th>
+                                <th scope="col">Mês/Ano</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Conta Inter</th>
+                                <th scope="col">Registro</th>
+                                <th scope="col">Função</th>
+                                <th scope="col">Salário</th>
+                                <th scope="col">Dias Trab</th>
+                                <th scope="col">Arred.</th>
+                                <th scope="col">Férias</th>
+                                <th scope="col">13º sal. ferias</th>
+                                <th scope="col">Periculosidade</th>
+                                <th scope="col">Salário Família</th>
+                                <th scope="col">Outras Entradas</th>
+                                <th scope="col">IR sobre Férias</th>
+                                <th scope="col">Vale e Faltas</th>
+                                <th scope="col">Vale Transporte</th>
+                                <th scope="col">Troco</th>
+                                <th scope="col">Total Geral</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for planfuncionario in db %}
+                            <tr>
+                                <th scope="row">{{ planfuncionario.id }}</th>
+                                <td>
+                                    <a href="{% url 'edit_salario' planfuncionario.id %}" class="btn btn-outline-primary btn-sm me-2">Editar</a>
+                                    <a onclick="deletarAlert({{ planfuncionario.id }}, {{ usuario.id }})" class="btn btn-outline-danger btn-sm me-2">Deletar</a>
+                                </td>
+                                <td type="month">{{ planfuncionario.mesAno }}</td>
+                                <td id="td1">{{ planfuncionario.funcionario.nome }}</td>
+                                <td>{{ planfuncionario.funcionario.conta_inter }}</td>
+                                <td>{{ planfuncionario.funcionario.registro }}</td>
+                                <td>{{ planfuncionario.funcionario.funcao }}</td>
+                                <td>R${{ planfuncionario.funcionario.salario }}</td>
+                                <td>{{ planfuncionario.dias_trabalhados }}</td>
+                                <td>R${{ planfuncionario.arred }}</td>
+                                <td>R${{ planfuncionario.ferias }}</td>
+                                <td>R${{ planfuncionario.decimo_terceiro_ferias }}</td>
+                                <td>R${{ planfuncionario.periculosidade }}</td>
+                                <td>R${{ planfuncionario.salario_familia }}</td>
+                                <td>R${{ planfuncionario.outras_entradas }}</td>
+                                <td>R${{ planfuncionario.ir_ferias }}</td>
+                                <td>R${{ planfuncionario.vales_e_faltas }}</td>
+                                <td>
+                                    {% if planfuncionario.vt == 1 %}
+                                        Não possui
+                                    {% else %}
+                                        Possui
+                                    {% endif %}
+                                </td>
+                                <td>R${{ planfuncionario.troco }}</td>
+                                <td>R${{ planfuncionario.geral }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="19" class="text-center">Nenhum plano de funcionário encontrado.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </main>
         </div>
-      </div>
-      <div class="table-responsive">
-        <table class="table table-striped table-sm" id="indexsalario">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Ações</th>
+    </div>
 
-              <th scope="col">Mês/Ano</th>
-              <th scope="col">Nome</th>
-              <th scope="col">Conta Inter</th>
-              <th scope="col">Registro</th>
-              <th scope="col">Função</th>
-              <th scope="col">Salário</th>
-              <th scope="col">Dias Trab</th>
-              <th scope="col">Arred.</th>
-              <th scope="col">Férias</th>
-              <th scope="col">13º sal. ferias</th>
-              <th scope="col">Periculosidade</th>
-              <th scope="col">Salário Família</th>
-              <th scope="col">Outras Entradas</th>
-              <th scope="col">IR sobre Férias</th>
-              <th scope="col">Vale e Faltas</th>
-              <th scope="col">Vale Transporte</th>
-              <th scope="col">Troco</th>
-              <th scope="col">Total Geral</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for planfuncionario in db %}
-            <tr>
-                <th scope="row">{{ planfuncionario.id }}</th>
-                <td>
-                    <a href="{% url 'edit_salario' planfuncionario.id %}" class="btn btn-outline-primary btn-sm me-2">Editar</a>
-                    <a href="{% url 'delete_salario' planfuncionario.id %}" class="btn btn-outline-danger btn-sm me-2">Deletar</a>
-                </td>
-                <td>{{ planfuncionario.mesAno }}</td>
-                <td id="td1">{{ planfuncionario.funcionario.nome }}</td>
-                <td>{{ planfuncionario.funcionario.conta_inter }}</td>
-                <td>{{ planfuncionario.funcionario.registro }}</td>
-                <td>{{ planfuncionario.funcionario.funcao }}</td>
-                <td>R${{ planfuncionario.funcionario.salario }}</td>
-                <td>{{ planfuncionario.dias_trabalhados }}</td>
-                <td>R${{ planfuncionario.arred }}</td>
-                <td>R${{ planfuncionario.ferias }}</td>
-                <td>R${{ planfuncionario.decimo_terceiro_ferias }}</td>
-                <td>R${{ planfuncionario.periculosidade }}</td>
-                <td>R${{ planfuncionario.salario_familia }}</td>
-                <td>R${{ planfuncionario.outras_entradas }}</td>
-                <td>R${{ planfuncionario.ir_ferias }}</td>
-                <td>R${{ planfuncionario.vales_e_faltas }}</td>
-                <td>
-                    {% if planfuncionario.vt == 1 %}
-                        Não possui
-                    {% else %}
-                        Possui
-                    {% endif %}
-                </td>
-                <td>R${{ planfuncionario.troco }}</td>
-                <td>R${{ planfuncionario.geral }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="19" class="text-center">Nenhum plano de funcionário encontrado.</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </main>
-  </div>
-</div>
+    <div class="ui basic modal">
+        <div class="ui icon header">
+            <i class="archive icon"></i>
+            Você deseja excluir mesmo?
+        </div>
+        <div class="actions">
+            <div class="ui red basic cancel inverted button">
+                <i class="remove icon"></i>
+                Não
+            </div>
+            <div class="ui green ok inverted button">
+                <i class="checkmark icon"></i>
+                Sim
+            </div>
+        </div>
+    </div>
 
-<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{% static 'js/download_table_index_salario.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-  </body>
+    <script>
+      function deletarAlert(planfuncionarioId, usuarioId) {
+        // Se o usuário confirmar, redireciona para a página de deleção
+        if (confirm("Você deseja realmente excluir este registro?")) {
+            window.location.href = `/delete_salario/${planfuncionarioId}/`;
+        }
+    }
+    
+    </script>
+    <script src="{% static 'js/download_table_index_salario.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+</body>
 </html>
+

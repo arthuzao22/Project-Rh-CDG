@@ -32,3 +32,6 @@ function baixarExcel() {
     // Remover o link após o download
     document.body.removeChild(link);
 }
+
+
+
