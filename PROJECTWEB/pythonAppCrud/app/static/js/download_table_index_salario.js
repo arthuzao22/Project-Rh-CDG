@@ -1,6 +1,6 @@
 function baixarExcel() {
     const tabela = document.getElementById("indexsalario");
-    let csv = [];
+    let xlsx = [];
     const linhas = tabela.querySelectorAll("tr");
 
     // Iterar sobre cada linha da tabela (tanto cabeçalho quanto dados)
@@ -10,19 +10,19 @@ function baixarExcel() {
         for (let j = 0; j < cols.length; j++) {
             linha.push(cols[j].innerText);
         }
-        csv.push(linha.join(","));
+        xlsx.push(linha.join(","));
     }
 
-    // Criar o conteúdo CSV como string
-    let csvString = csv.join("\n");
+    // Criar o conteúdo xlsx como string
+    let xlsxString = xlsx.join("\n");
 
-    // Criar um Blob com os dados CSV
-    let blob = new Blob([csvString], { type: 'text/csv' });
+    // Criar um Blob com os dados xlsx
+    let blob = new Blob([xlsxString], { type: 'text/xlsx' });
 
     // Criar um link temporário para download
     let link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "tabela.csv";  // Nome do arquivo
+    link.download = "tabela.xlsx";  // Nome do arquivo
     link.style.display = "none";
 
     // Adicionar o link ao documento e clicar nele para baixar
@@ -33,10 +33,5 @@ function baixarExcel() {
     document.body.removeChild(link);
 }
 
-function deletarAlert(planfuncionarioId, usuarioId) {
-    // Se o usuário confirmar, redireciona para a página de deleção
-    if (confirm(`Você deseja realmente excluir este registro?${planfuncionarioId}`)) {
-        window.location.href = `/delete_salario/${planfuncionarioId}/`;
-    }
-}
+
 

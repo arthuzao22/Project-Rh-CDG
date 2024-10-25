@@ -12,6 +12,8 @@ import math
 from django.shortcuts import render
 import numpy as np
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+
 
 # Página inicial
 def home(request):
@@ -37,8 +39,25 @@ def create(request):
 
 # Visualiza detalhes de um funcionário
 def view(request, pk):
-    funcionario = get_object_or_404(Funcionarios, pk=pk)
-    return render(request, 'Funcionarios/view.html', {'db': funcionario})
+    try:
+        funcionario = Funcionarios.objects.get(pk=pk)
+        dados = {
+            'nome': funcionario.nome,
+            'registro': funcionario.registro,
+            'funcao': funcionario.funcao,
+            'data_nascimento': funcionario.data_nascimento,
+            'data_admissao': funcionario.data_admissao,
+            'cpf': funcionario.cpf,
+            'conta_inter': funcionario.conta_inter,
+            'ultimo_exame': funcionario.ultimo_exame,
+            'proximo_exame': funcionario.proximo_exame,
+            'email': funcionario.email,
+            'salario': funcionario.salario,
+            'status': funcionario.status,
+        }
+        return JsonResponse(dados)
+    except:
+        return JsonResponse({'error': 'objeto nao encontrado'}, status=404)
 
 # Edição de funcionário
 def edit(request, pk):
