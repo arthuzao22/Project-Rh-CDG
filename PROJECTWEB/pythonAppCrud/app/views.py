@@ -13,6 +13,7 @@ from django.shortcuts import render
 import numpy as np
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+import json
 
 
 # Página inicial
@@ -61,19 +62,48 @@ def view(request, pk):
 
 # Edição de funcionário
 def edit(request, pk):
-    funcionario = get_object_or_404(Funcionarios, pk=pk)
-    form = FuncionariosForm(instance=funcionario)
-    return render(request, 'Funcionarios/form.html', {'form': form, 'db': funcionario})
+    try:
+        print(pk)
+        funcionario = Funcionarios.objects.get(pk=pk)
+        dados = {
+            'nome': funcionario.nome,
+            'registro': funcionario.registro,
+            'funcao': funcionario.funcao,
+            'data_nascimento': funcionario.data_nascimento,
+            'data_admissao': funcionario.data_admissao,
+            'cpf': funcionario.cpf,
+            'conta_inter': funcionario.conta_inter,
+            'ultimo_exame': funcionario.ultimo_exame,
+            'proximo_exame': funcionario.proximo_exame,
+            'email': funcionario.email,
+            'salario': funcionario.salario,
+            'status': funcionario.status,
+        }
+        return JsonResponse(dados)
+    except:
+        return JsonResponse({'error': 'objeto nao encontrado'}, status=404)
 
-# Atualização de funcionário
+
 def update(request, pk):
-    funcionario = get_object_or_404(Funcionarios, pk=pk)
-    form = FuncionariosForm(request.POST, instance=funcionario)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Funcionário atualizado com sucesso!")
-        return redirect('indexFuncionarios')
-    return render(request, 'Funcionarios/form.html', {'form': form, 'db': funcionario})
+    if request.method == 'POST':
+        funcionario = get_object_or_404(Funcionarios, pk=pk)
+
+        # Carrega os dados do corpo da requisição
+        data = json.loads(request.body)
+        form = FuncionariosForm(data, instance=funcionario)
+
+        # Log de dados recebidos
+        print("Dados recebidos:", data)
+
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'message': 'Funcionário atualizado com sucesso!'})
+        
+        # Se houver erro, imprime os erros
+        print("Erros de validação:", form.errors)
+        return JsonResponse({'error': form.errors}, status=400)
+    return JsonResponse({'error': 'Método não permitido'}, status=405)
+
 
 # Listagem de funcionários
 def indexFuncionarios(request):
